@@ -22,7 +22,7 @@ $dest_apidoc_delete = false;
 
 require_once 'PEAR.php';
 require_once 'Console/Getopt.php';
-require_once 'Experimental/System.php';
+require_once 'System.php';
 
 error_reporting(E_ALL ^ E_NOTICE);
 
