@@ -75,6 +75,9 @@ define('PHPDOC_INCLUDE_DIR', $phpdoc_include_dir . DIRECTORY_SEPARATOR);
 $lnbreak = (OS_WINDOWS) ? "\r\n" : "\n"; // Mac not supported yet
 define('PHPDOC_LINEBREAK', $lnbreak);
 
+// Html tags allowed to be used in docs
+define('PHPDOC_ALLOWEDHTMLTAGS', '<a>,<i>,<b>,<pre>,<ul>,<li>,<br>,<code>');
+
 // PHPDoc tries to handle args by it self
 unset($argc);
 // Clean-up previous docs
