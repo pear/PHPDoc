@@ -54,9 +54,7 @@ class PhpdocParserCore extends PhpdocParserTags {
                                 'modules'   => array()
                         );
 
-
         // remember the documented elements to be able to compare with the list of all elements 
-        $variables = array();
         $functions = array();
         $variables = array();
         $constants = array();
@@ -71,7 +69,6 @@ class PhpdocParserCore extends PhpdocParserTags {
         else
             list( , $phpcode) = $this->getModuleDoc($phpcode);
             
-        
         //
         // Find documented elements
         //
