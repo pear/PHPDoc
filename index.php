@@ -47,6 +47,12 @@ define('PHPDOC_TEMPLATE_DIR', $templatedir);
 // Html tags allowed to be used in doc tags
 define("PHPDOC_ALLOWEDHTMLTAGS", "<a>,<i>,<b>,<pre>,<ul>,<li>,<br>,<code>");
 
+if (!isset($_SERVER)) {
+    define("SERVER_DOC_ROOT", $DOCUMENT_ROOT . '/');    
+} else {
+    define("SERVER_DOC_ROOT", $_SERVER['DOCUMENT_ROOT'] . '/');    
+}
+
 // main PHPDoc Include File
 include("./prepend.php");		
 
