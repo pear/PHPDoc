@@ -231,6 +231,15 @@ class Phpdoc extends PhpdocSetupHandler {
         }
 
         $renderer->finish();    
+
+
+        // 3/11/2002 - Tim Gallagher added the next two lines
+        // so the version and link could be put in and easily
+        // changed as versions, and urls change.
+        $tpl->setVariable("PHPDOCVERSION", PHPDOC_VERSION);
+        $tpl->setVariable("PHPDOC_LINK", PHPDOC_LINK);
+        $tpl->setVariable("PHPDOC_GENERATED_DATE", PHPDOC_GENERATED_DATE);
+
         $fileHandler->createFile($target."phpdoc_xmlfiles".$this->targetFileSuffix, $tpl->get());
 
         $this->outl($this->finishInstructions);
