@@ -115,7 +115,7 @@ class PhpdocHTMLClassRenderer extends PhpdocHTMLDocumentRenderer {
         $this->tpl->setVariable($tplvars);
         $this->tpl->setVariable("APPNAME", $this->application);
 
-        $this->fileHandler->createFile($this->path.$htmlfile, $this->tpl->get() );
+        $this->fileHandler->createFile($this->path.$htmlfile, $this->tpl->get());
         $this->tpl->free();    
 
     } // end func renderClass

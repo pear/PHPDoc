@@ -309,7 +309,7 @@ class PhpdocHTMLDocumentRenderer extends PhpdocHTMLRenderer {
         reset($this->accessModifiers);
         while (list($k, $access) = each($this->accessModifiers)) {
             if (0 == count($this->functions[$access])) 
-                continue;            
+                continue;
 
             $this->tpl->setCurrentBlock("functionsummary_loop");
             reset($this->functions[$access]);
