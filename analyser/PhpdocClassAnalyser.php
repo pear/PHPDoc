@@ -483,7 +483,7 @@ class PhpdocClassAnalyser extends PhpdocAnalyser {
     * Checks see references in the given element array (functions, variables...)
     *
     * References to variables and functions within the same class get checked.
-    * It the references element does not exist, the reference gets deleted and 
+    * If the references element does not exist, the reference gets deleted and 
     * a doc warning gets generated.
     * 
     * @param    array   List of functions, variables,...
