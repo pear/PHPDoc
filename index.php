@@ -40,7 +40,12 @@
 				// Directory with include files
 				define("PHPDOC_INCLUDE_DIR", "c:/www/apache/doc/");
 				// Important: set this to the Linebreak sign of your system!
-				define("PHPDOC_LINEBREAK", "\r\n");
+				if (substr(php_uname(), 0, 7) == "Windows") $lnbreak = "\r\n";
+				else $lnbreak = "\n";
+				define("PHPDOC_LINEBREAK", $lnbreak);
+
+				// Html tags allowed to be used in docs
+				define("PHPDOC_ALLOWEDHTMLTAGS", "<a>,<i>,<b>,<pre>,<ul>,<li>,<br>,<code>");
 		
 				// main PHPDoc Include File
 				include("./prepend.php");		
