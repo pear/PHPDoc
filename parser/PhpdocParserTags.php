@@ -257,14 +257,14 @@ class PhpdocParserTags extends PhpdocParserRegExp {
                                 list($msg, $entry) = $this->analyseSeeTagRegs($regs);
                                 $error .= $msg;
                                 if (count($entry) > 0)
-                                    $data["see"]["var"][] = $entry;    
+                                    $data["see"]["variables"][] = $entry;
                                 
                             } else if (preg_match($this->TAGS["see_function"], $reference, $regs)) {
                                 
                                 list($msg, $entry) = $this->analyseSeeTagRegs($regs);
                                 $error .= $msg;
                                 if (count($entry) > 0)
-                                    $data["see"]["function"][] = $entry;
+                                    $data["see"]["functions"][] = $entry;
                                 
                             } else if (preg_match($this->TAGS["see_moduleclass"], $reference, $regs)) {
 
