@@ -352,7 +352,7 @@ class PhpdocHTMLClassRenderer extends PhpdocHTMLDocumentRenderer {
             // 3/7/2002 - Tim Gallagher<timg@sunflowerroad.com>
             // modified the line below to remove an extra space before the pipe character.
             if ($level > 0)
-                $value.= sprintf("%s |<br>%s+-- ", $indent, $indent);
+                $value.= sprintf("%s|<br>%s+-- ", $indent, $indent);
 
             $value.= sprintf('<a href="%s">%s</a><br>', 
                                 $path[$i] . $this->file_extension,
@@ -366,7 +366,7 @@ class PhpdocHTMLClassRenderer extends PhpdocHTMLDocumentRenderer {
         // 3/7/2002 - Tim Gallagher<timg@sunflowerroad.com>
         // modified the line below to remove an extra space before the pipe character.
         if ($level > 0)
-            $value.= sprintf("%s |<br>%s+-- ", $indent, $indent);
+            $value.= sprintf("%s|<br>%s+-- ", $indent, $indent);
 
         $value.= sprintf('%s<br>', $class);
 
