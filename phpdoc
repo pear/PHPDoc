@@ -15,6 +15,8 @@ $phpdoc_include_dir = '/usr/lib/php/PHPDoc';
 $source_files = '/usr/lib/php/';
 // save the generated docs here:
 $dest_apidoc_dir = '/usr/doc/pear';
+// force the deletion of the target apidocs directory
+$dest_apidoc_delete = false;
 
 /*** END CONF ***/
 
@@ -24,7 +26,7 @@ require_once 'Experimental/System.php';
 
 error_reporting(E_ALL ^ E_NOTICE);
 
-$options = Console_Getopt::getopt($argv, "h?v:i:s:d:");
+$options = Console_Getopt::getopt($argv, "h?fv:i:s:d:");
 if (PEAR::isError($options)) {
     usage($options);
 }
@@ -45,6 +47,10 @@ foreach ($options[0] as $opt) {
         case 'd':
             // save the generated docs here:
             $dest_apidoc_dir = $param;
+            break;
+        case 'f':
+            // force the deletion of the target apidocs directory
+            $dest_apidoc_delete = true;
             break;
         case 'h':
         case '?':
@@ -72,7 +78,7 @@ define('PHPDOC_LINEBREAK', $lnbreak);
 // PHPDoc tries to handle args by it self
 unset($argc);
 // Clean-up previous docs
-if (@is_dir($dest_apidoc_dir)) {
+if ($dest_apidoc_delete && @is_dir($dest_apidoc_dir)) {
     System::rm("-r $dest_apidoc_dir");
 }
 
@@ -118,11 +124,12 @@ function usage($obj = null)
         fputs($stderr, $obj->getMessage());
     }
     fputs($stderr,
-          "\nUsage: phpdoc [-h] [-i <dir>] [-s <dir>] [-d <dir>]\n".
+          "\nUsage: phpdoc [-h] [-f] [-i <dir>] [-s <dir>] [-d <dir>]\n".
           "Options:\n".
           "     -i <dir>  Directory with the PHPDoc include files\n".
           "     -d <dir>  directory where your source files reside\n".
           "     -s <dir>  save the generated docs here\n".
+          "     -f        force the deletion of the target apidocs directory\n".
           "     -h, -?    display help/usage (this message)\n".
           "You could also set defaults values editing the header of this script\n".
           "\n");
