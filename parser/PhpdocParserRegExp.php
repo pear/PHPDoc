@@ -357,7 +357,7 @@ class PhpdocParserRegExp extends PhpdocObject {
         // RegExp used to grep define statements.
         // NOTE: the backticks do not allow the usage of $this->PHP_BASE
         //
-        $this->PHP_COMPLEX["const"] = sprintf("@^%sdefine%s\(%s(%s)%s,%s(%s)%s(?:,%s(%s))?%s\)%s;@is", 
+        $this->PHP_COMPLEX["const"] = sprintf("@^[^>]%sdefine%s\(%s(%s)%s,%s(%s)%s(?:,%s(%s))?%s\)%s;@is", 
                                                 $this->PHP_BASE["space_optional"],
                                                 $this->PHP_BASE["space_optional"],
                                                 $this->PHP_BASE["space_optional"],
