@@ -113,6 +113,14 @@ class PhpdocHTMLClassRenderer extends PhpdocHTMLDocumentRenderer {
 
         $this->tpl->setCurrentBlock("__global__");
         $this->tpl->setVariable($tplvars);
+
+        // 3/11/2002 - Tim Gallagher added the next two lines
+        // so the version and link could be put in and easily
+        // changed as versions, and urls change.
+        $this->tpl->setVariable("PHPDOCVERSION", PHPDOC_VERSION);
+        $this->tpl->setVariable("PHPDOC_LINK", PHPDOC_LINK);
+        $this->tpl->setVariable("PHPDOC_GENERATED_DATE", PHPDOC_GENERATED_DATE);
+        
         $this->tpl->setVariable("APPNAME", $this->application);
 
         $this->fileHandler->createFile($this->path.$htmlfile, $this->tpl->get());
@@ -341,7 +349,8 @@ class PhpdocHTMLClassRenderer extends PhpdocHTMLDocumentRenderer {
         for ($i = $num; $i >= 0; --$i) {
 
             $indent = $this->getIndent($level);
-
+            // 3/7/2002 - Tim Gallagher<timg@sunflowerroad.com>
+            // modified the line below to remove an extra space before the pipe character.
             if ($level > 0)
                 $value.= sprintf("%s |<br>%s+-- ", $indent, $indent);
 
@@ -354,7 +363,8 @@ class PhpdocHTMLClassRenderer extends PhpdocHTMLDocumentRenderer {
         }
 
         $indent = $this->getIndent($level);
-
+        // 3/7/2002 - Tim Gallagher<timg@sunflowerroad.com>
+        // modified the line below to remove an extra space before the pipe character.
         if ($level > 0)
             $value.= sprintf("%s |<br>%s+-- ", $indent, $indent);
 
