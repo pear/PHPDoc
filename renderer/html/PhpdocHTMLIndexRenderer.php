@@ -222,14 +222,14 @@ class PhpdocHTMLIndexRenderer extends PhpdocHTMLRenderer {
                         case "functions":
                             $desc = sprintf('Function in %s <a href="%s">%s</a>',
                                                 $element["sourcetype"],
-                                                $this->nameToUrl($element["source"]) . $this->file_extension,
+                                                $this->nameToUrl($element["source"]) . $this->file_extension . "#" . $element["type"] . "_" . $element["name"] . "()",
                                                 $element["source"]
                                             );
                             break;
 
                         case "variables":
                             $desc = sprintf('Variable in Class <a href="%s">%s</a>',
-                                                $this->nameToUrl($element["source"]) . $this->file_extension,
+                                                $this->nameToUrl($element["source"]) . $this->file_extension . "#" . $element["type"] . "_" . $element["name"],
                                                 $element["source"]
                                             );
                             break;
@@ -245,7 +245,7 @@ class PhpdocHTMLIndexRenderer extends PhpdocHTMLRenderer {
                         case "consts":
                             $desc = sprintf('Constant defined in %s <a href="%s">%s</a>',
                                                 $element["sourcetype"],
-                                                $this->nameToUrl($element["source"]) . $this->file_extension,
+                                                $this->nameToUrl($element["source"]) . $this->file_extension . "#" . $element["type"] . "_" . $element["name"],
                                                 $element["source"]
                                             );
                             break;
