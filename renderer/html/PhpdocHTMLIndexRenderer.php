@@ -62,6 +62,10 @@ class PhpdocHTMLIndexRenderer extends PhpdocHTMLRenderer {
 
         $this->accessor = new PhpdocIndexAccessor;
         $this->tpl = new IntegratedTemplate($this->templateRoot);
+        $this->tpl->setVariable("PHPDOCVERSION", PHPDOC_VERSION);
+        $this->tpl->setVariable("PHPDOC_LINK", PHPDOC_LINK);
+        $this->tpl->setVariable("PHPDOC_GENERATED_DATE", PHPDOC_GENERATED_DATE);
+
         $this->fileHandler = new PhpdocFileHandler;
 
     } // end constructor
@@ -93,7 +97,15 @@ class PhpdocHTMLIndexRenderer extends PhpdocHTMLRenderer {
         if (!is_object($this->treeTpl)) 
             return;
 
+        // 3/11/2002 - Tim Gallagher added the next two lines
+        // so the version and link could be put in and easily
+        // changed as versions, and urls change.
+        $this->treeTpl->setVariable("PHPDOCVERSION", PHPDOC_VERSION);
+        $this->treeTpl->setVariable("PHPDOC_LINK", PHPDOC_LINK);
+        $this->treeTpl->setVariable("PHPDOC_GENERATED_DATE", PHPDOC_GENERATED_DATE);
+
         $this->treeTpl->setVariable("APPNAME", $this->application);
+
         $this->fileHandler->createFile($this->path . "phpdoc_classtree" . $this->file_extension, $this->treeTpl->get() );
         $this->treeTpl = "";
 
@@ -129,7 +141,14 @@ class PhpdocHTMLIndexRenderer extends PhpdocHTMLRenderer {
         if (!is_object($this->moduleTpl)) 
             return;
 
+		// 3/11/2002 - Tim Gallagher added the next two lines
+        // so the version and link could be put in and easily
+        // changed as versions, and urls change.
+        $this->moduleTpl->setVariable("PHPDOCVERSION", PHPDOC_VERSION);
+        $this->moduleTpl->setVariable("PHPDOC_LINK", PHPDOC_LINK);
+        $this->moduleTpl->setVariable("PHPDOC_GENERATED_DATE", PHPDOC_GENERATED_DATE);
         $this->moduleTpl->setVariable("APPNAME", $this->application);
+
         $this->fileHandler->createFile($this->path . "phpdoc_modulegroup" . $this->file_extension, $this->moduleTpl->get() );
         $this->moduleTpl = "";
     } // end func finishModulegroups
@@ -175,6 +194,9 @@ class PhpdocHTMLIndexRenderer extends PhpdocHTMLRenderer {
 
         $this->accessor->loadXMLFile($this->path.$xmlfile);
         $this->tpl->loadTemplatefile("elementlist.html");
+        $this->tpl->setVariable("PHPDOCVERSION", PHPDOC_VERSION);
+        $this->tpl->setVariable("PHPDOC_LINK", PHPDOC_LINK);
+        $this->tpl->setVariable("PHPDOC_GENERATED_DATE", PHPDOC_GENERATED_DATE);
 
         $chapters = $this->accessor->getChapternames();
         if (0 != count($chapters)) {
@@ -267,7 +289,15 @@ class PhpdocHTMLIndexRenderer extends PhpdocHTMLRenderer {
 
         }
 
+        // 3/11/2002 - Tim Gallagher added the next two lines
+        // so the version and link could be put in and easily
+        // changed as versions, and urls change.
+        $this->tpl->setVariable("PHPDOCVERSION", PHPDOC_VERSION);
+        $this->tpl->setVariable("PHPDOC_LINK", PHPDOC_LINK);
+        $this->tpl->setVariable("PHPDOC_GENERATED_DATE", PHPDOC_GENERATED_DATE);
+
         $this->tpl->setVariable("APPNAME", $this->application);
+
         $this->fileHandler->createFile($this->path . "phpdoc_elementlist" . $this->file_extension, $this->tpl->get() );
         $this->tpl->free();
 
@@ -321,7 +351,15 @@ class PhpdocHTMLIndexRenderer extends PhpdocHTMLRenderer {
 
         }
 
+        // 3/11/2002 - Tim Gallagher added the next two lines
+        // so the version and link could be put in and easily
+        // changed as versions, and urls change.
+        $this->tpl->setVariable("PHPDOCVERSION", PHPDOC_VERSION);
+        $this->tpl->setVariable("PHPDOC_LINK", PHPDOC_LINK);
+        $this->tpl->setVariable("PHPDOC_GENERATED_DATE", PHPDOC_GENERATED_DATE);
+
         $this->tpl->setVariable("APPNAME", $this->application);
+
         $this->fileHandler->createFile($this->path . "phpdoc_packagelist" . $this->file_extension, $this->tpl->get() );
         $this->tpl->free();
 
@@ -373,6 +411,13 @@ class PhpdocHTMLIndexRenderer extends PhpdocHTMLRenderer {
             $this->tpl->setVariable("PACKAGE_NAME", $packagename);
             $this->tpl->parseCurrentBlock();
 
+            // 3/11/2002 - Tim Gallagher added the next two lines
+            // so the version and link could be put in and easily
+            // changed as versions, and urls change.
+            $this->tpl->setVariable("PHPDOCVERSION", PHPDOC_VERSION);
+            $this->tpl->setVariable("PHPDOC_LINK", PHPDOC_LINK);
+            $this->tpl->setVariable("PHPDOC_GENERATED_DATE", PHPDOC_GENERATED_DATE);
+
             $this->tpl->setVariable("APPNAME", $this->application);
             $packagename = $this->nameToUrl($packagename);
             $this->fileHandler->createFile($this->path . "packageelementlist_" . $packagename . $this->file_extension, $this->tpl->get());
@@ -399,14 +444,24 @@ class PhpdocHTMLIndexRenderer extends PhpdocHTMLRenderer {
 
         reset($this->packages);
         while (list($packagename, $v) = each($this->packages)) {
-
-            $this->tpl->setVariable("PACKAGE", sprintf('<a href="packageelementlist_%s" target="elements">%s</a>',
+            // 3/1/2002 - Tim Gallagher<timg@sunflowerroad.com>
+            // target="packageelements"
+            // removed the line above from the line below directly before the closing > in the opening anchor tag.
+            // this assumes that in the html template file, a base_target will be needed.
+            $this->tpl->setVariable("PACKAGE", sprintf('<a href="packageelementlist_%s">%s</a>',
                                                         $this->nameToUrl($packagename) . $this->file_extension,
                                                         $packagename )
                                    );
             $this->tpl->parseCurrentBlock();                                                            
             
         }
+
+        // 3/11/2002 - Tim Gallagher added the next two lines
+        // so the version and link could be put in and easily
+        // changed as versions, and urls change.
+        $this->tpl->setVariable("PHPDOCVERSION", PHPDOC_VERSION);
+        $this->tpl->setVariable("PHPDOC_LINK", PHPDOC_LINK);
+        $this->tpl->setVariable("PHPDOC_GENERATED_DATE", PHPDOC_GENERATED_DATE);
 
         $this->tpl->setVariable("APPNAME", $this->application);
         $this->fileHandler->createFile($this->path . "frame_packagelist" . $this->file_extension, $this->tpl->get() );
