@@ -248,7 +248,7 @@ class PhpdocParser extends PhpdocClassParser {
     */    
     function addModule($group, $filename) {
 
-        $data = $this->getPhpdocParagraphs($this->phpfiles[$filename], array("classes", "variables") );
+        $data = $this->getPhpdocParagraphs($this->phpfiles[$filename], array("classes"=>true, "variables"=>true) );
         // free memory as soon as possible...
         unset($this->phpfiles[$filename]);
         
@@ -280,7 +280,7 @@ class PhpdocParser extends PhpdocClassParser {
     */
     function addClass($classname, $filename) {
         
-        $data = $this->getPhpdocParagraphs($this->phpfiles[$filename], array("modules"));
+        $data = $this->getPhpdocParagraphs($this->phpfiles[$filename], array("modules"=>true));
         // free memory as soon as possible...
         unset($this->phpfiles[$filename]);
         
