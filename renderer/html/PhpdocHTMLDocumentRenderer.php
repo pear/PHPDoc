@@ -613,7 +613,7 @@ class PhpdocHTMLDocumentRenderer extends PhpdocHTMLRenderer {
 
         $value = "";
         if (!isset($links[0])) {
-            $value .= sprintf('<a href="%s">%s</a>%s, ', 
+            $value .= sprintf('<a href="%s" target="_blank">%s</a>%s, ',
                                 $links["url"], 
                                 $links["url"], 
                                 ("" != $links["value"]) ? " - " . $links["value"] : ""
@@ -622,7 +622,7 @@ class PhpdocHTMLDocumentRenderer extends PhpdocHTMLRenderer {
 
             reset($links);
             while (list($k, $link) = each($links)) {
-                $value .= sprintf('<a href="%s">%s</a>%s, ', 
+                $value .= sprintf('<a href="%s" target="_blank">%s</a>%s, ',
                                     $link["url"], 
                                     $link["url"], 
                                     ("" != $link["value"]) ? " - " . $links["value"] : ""
