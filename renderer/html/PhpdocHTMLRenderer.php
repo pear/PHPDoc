@@ -38,7 +38,7 @@ class PhpdocHTMLRenderer extends PhpdocRendererObject {
     /**
     * Sets a directory path prefix.
     *
-    * @param    string    
+    * @param     string  $path
     */
     function setPath($path) {
 
@@ -51,7 +51,7 @@ class PhpdocHTMLRenderer extends PhpdocRendererObject {
     /**
      * Sets the template directory.
      *
-     * @param    string
+     * @param    string  $templateRoot
      */
     function setTemplateRoot($templateRoot) {
 
@@ -69,11 +69,23 @@ class PhpdocHTMLRenderer extends PhpdocRendererObject {
      * customize your rendering result.
      * strip some tags.
      *
-     * @param    string  String to encode
-     * @return   string  $string    Encoded string
+     * @param    string  $string    String to encode
+     * @return   string  Encoded string
      */
     function encode($string) {
-        return str_replace(PHPDOC_LINEBREAK . PHPDOC_LINEBREAK, '<p>', strip_tags($string, '<a>,<i>,<b>,<pre>'));
+        $string = strip_tags ($string, PHPDOC_ALLOWEDHTMLTAGS);
+
+        if ($regs = preg_split ("/(<pre>|<\/pre>)/", $string, -1, PREG_SPLIT_DELIM_CAPTURE)) {
+            for ($i = 0; $i < sizeof ($regs); $i++)
+            {
+            	if (($regs[$i] == "<pre>") && ($regs[$i+2] == "</pre>")) $i += 2;
+            	else $regs[$i] = preg_replace ("/(" . PHPDOC_LINEBREAK . PHPDOC_LINEBREAK . ")/", '<p>', $regs[$i]);
+            }
+			return implode ("", $regs);
+        } else {
+        	return preg_replace ("/(" . PHPDOC_LINEBREAK . PHPDOC_LINEBREAK . ")/", '<p>', $string);
+        }
+
     } // end func encode
 
 } // end class PhpdocHTMLRenderer
