@@ -146,7 +146,7 @@ function usage($obj = null)
         fputs($stderr, $obj->getMessage());
     }
     fputs($stderr,
-          "\nUsage: phpdoc [-h] [-f] [-i <dir>] [-s <dir>] [-d <dir>]\n".
+          "\nUsage: phpdoc [-h] [-f] [-t <dir>] [-e <name>] [-s <dir>] [-d <dir>]\n".
           "Options:\n".
           "     -s <dir>  directory where your source files reside\n".
           "     -d <dir>  destination dir (save the generated docs here)\n".
