@@ -1,7 +1,11 @@
-#!/usr/local/bin/php -Cq
+#!/usr/bin/php -Cq
 <?php
 /**
 * Console script to generate PHPDoc API Docucumentation from the command line
+*
+* TODO:
+*   - Added template selection support (for templates at rendered/html). Now
+*     uses the default
 *
 * @author Tomas V.V.Cox <cox@idecnet.com>
 * @version $Id$
@@ -26,6 +30,7 @@ require_once 'System.php';
 
 error_reporting(E_ALL ^ E_NOTICE);
 
+$argv = Console_Getopt::readPHPArgv();
 $options = Console_Getopt::getopt($argv, "h?fv:i:s:d:");
 if (PEAR::isError($options)) {
     usage($options);
@@ -69,6 +74,7 @@ $start = time();
 ini_set('max_execution_time', 0);
 
 // Directory with PHPDoc include files
+$phpdoc_include_dir = realpath($phpdoc_include_dir);
 define('PHPDOC_INCLUDE_DIR', $phpdoc_include_dir . DIRECTORY_SEPARATOR);
 
 // Important: set this to the Linebreak sign of your system!
@@ -101,7 +107,7 @@ $doc->setSourceDirectory($source_files);
 $doc->setTarget($dest_apidoc_dir);
 
 // use these templates:
-$doc->setTemplateDirectory(PHPDOC_INCLUDE_DIR . '/renderer/html/templates/');
+$doc->setTemplateDirectory(PHPDOC_INCLUDE_DIR . '/renderer/html/default/');
 
 // source files have one of these suffixes:
 $doc->setSourceFileSuffix(array ('php', 'inc'));
@@ -113,9 +119,12 @@ $doc->parse();
 $doc->render();
 
 // Copy the standar files
-$files = array('empty.html', 'index2.html', 'phpdoc.css', 'phpdoc.dtd');
+$files = array('empty.html', 'index.html', 'phpdoc.css', 'phpdoc.dtd');
+$DS = DIRECTORY_SEPARATOR;
+$files_prefix = implode($DS, array('renderer', 'html', 'default', 'static'));
 foreach($files as $file) {
-    copy("$phpdoc_include_dir/apidoc/keep/$file", "$dest_apidoc_dir/$file");
+    copy($phpdoc_include_dir . $DS . $files_prefix . $DS . $file,
+         "$dest_apidoc_dir/$file");
 }
 print "API Docs for $source_files done in $dest_apidoc_dir\n\n";
 printf("%d seconds needed\n\n", time() - $start);
