@@ -27,21 +27,14 @@
 	</tr>
 	<tr>
 		<td align="left" valign="top">			
-			File: <a href="file://{CLASS_FILE}" target="_new">{CLASS_FILE}</a>
-			<h5>{APPNAME} - {CLASS_PACKAGE}</h5>
+			<h6>{CLASS_PACKAGE}</h6>
 			<h1>{CLASS_NAME}</h1>
-			{CLASS_TREE}
-			<p>
-			{CLASS_SHORTDESCRIPTION}{CLASS_UNDOC}
-			<p>
-			&nbsp;
+			<pre>{CLASS_TREE}</pre>
 		</td>
 	</tr>
 	<tr>
 		<td align="left" valign="top">
 			<h4>{CLASS_ACCESS} {CLASS_ABSTRACT} {CLASS_STATIC} {CLASS_FINAL} class {CLASS_NAME} {CLASS_EXTENDS}</h4>
-			{CLASS_SHORTDESCRIPTION}
-			<br>
 			{CLASS_DESCRIPTION}
 			<p>
 			<table>
@@ -205,14 +198,12 @@
 				<tr><td colspan="2" align="left" valign="top"><a name="function_{NAME}()"><h4>{NAME}</h4></a></td></tr>
 				<tr>
 					<td colspan="2" align="left" valign="top">
-						<b>{ACCESS} {ABSTRACT} {STATIC} {FINAL} {RETURNTYPE} {NAME}( {PARAMETER} )</b><p>
+						<b>{ACCESS} {ABSTRACT} {STATIC} {FINAL} {RETURNTYPE} {NAME}({PARAMETER})</b><p>
 					</td>
 				</tr>
 				<tr>
 					<td width="10" align="left" valign="top">&nbsp;</td>
 					<td align="left" valign="top">
-						{SHORTDESCRIPTION}
-						<br>
 						{DESCRIPTION}
 						<p>
 						{UNDOC}
@@ -347,8 +338,6 @@
 						<p>
 						>><code>{VALUE}</code><<
 						<p>
-						{SHORTDESCRIPTION}
-						<br>
 						{DESCRIPTION}
 					</td>
 				</tr>
@@ -427,8 +416,6 @@
 						<code>define( {NAME}, >>{VALUE}<< )</code><br>
 						Case: {CASE}
 						<p>
-						{SHORTDESCRIPTION}
-						<br>
 						{DESCRIPTION}
 					</td>
 				</tr>
@@ -506,8 +493,6 @@
 					<td colspan="2" align="left" valign="top">
 						<b>{TYPE}( {FILE} )</b>
 						<p>
-						{SHORTDESCRIPTION}
-						<br>
 						{DESCRIPTION}
 					</td>
 				</tr>
