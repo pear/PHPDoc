@@ -30,8 +30,15 @@ $sourcedir = '';
 */
 $templatedir = '';
 
+/*
+ * Set time limit (in seconds)
+*/
+$timelimit = 0;
+
 
 $start = time();
+
+set_time_limit($timelimit);
 
 if (empty($sourcedir)) {
     $sourcedir = './';
@@ -147,7 +154,7 @@ $out = ob_get_contents();
 ob_end_clean();
 
 // display a link to view the documentation with.
-echo '<a href="' . $_POST['PHPDOC_targetdir'] . '/">View your generated documentation here.</a><br>';
+echo '<a href="' . $_POST['PHPDOC_targetdir'] . '/">View your generated documentation here</a><br>';
 
 echo nl2br($out);
 
