@@ -147,7 +147,7 @@ class PhpdocParserTags extends PhpdocParserRegExp {
                         
                         if ("" == $regs[3]) {
                         
-                            $tag["msg"] = "Variablename ist missing, syntax: '" . $this->PHPDOC_TAGS["@$tagname"] . "'.";
+                            $tag["msg"] = "Variablename is missing, syntax: '" . $this->PHPDOC_TAGS["@$tagname"] . "'.";
                             $data["syntaxerror"][] = $tag;
                             
                         }
