@@ -1,0 +1,133 @@
+#!/usr/local/bin/php -Cq
+<?php
+/**
+* Console script to generate PHPDoc API Docucumentation from the command line
+*
+* @author Tomas V.V.Cox <cox@idecnet.com>
+* @version $Id$
+*/
+
+/*** CONFIGURATION ***/
+
+// Directory with PHPDoc include files
+$phpdoc_include_dir = '/usr/lib/php/PHPDoc';
+// directory where your source files reside
+$source_files = '/usr/lib/php/';
+// save the generated docs here:
+$dest_apidoc_dir = '/usr/doc/pear';
+
+/*** END CONF ***/
+
+require_once 'PEAR.php';
+require_once 'Console/Getopt.php';
+require_once 'Experimental/System.php';
+
+error_reporting(E_ALL ^ E_NOTICE);
+
+$options = Console_Getopt::getopt($argv, "h?v:i:s:d:");
+if (PEAR::isError($options)) {
+    usage($options);
+}
+
+if (sizeof($options[0]) < 1) {
+    usage();
+}
+foreach ($options[0] as $opt) {
+    $param = $opt[1];
+    switch($opt[0]) {
+        case 'i':
+            $phpdoc_include_dir = $param;
+            break;
+        case 's':
+            // directory where your source files reside
+            $source_files = $param;
+            break;
+        case 'd':
+            // save the generated docs here:
+            $dest_apidoc_dir = $param;
+            break;
+        case 'h':
+        case '?':
+        default:
+            usage();
+            break;
+    }
+}
+
+$start = time();
+
+// WARNING: long runtimes! Make modifications
+// to the php[3].ini if neccessary. A P3-500
+// needs slightly more than 30 seconds to
+// document phpdoc itself.
+ini_set('max_execution_time', 0);
+
+// Directory with PHPDoc include files
+define('PHPDOC_INCLUDE_DIR', $phpdoc_include_dir . DIRECTORY_SEPARATOR);
+
+// Important: set this to the Linebreak sign of your system!
+$lnbreak = (OS_WINDOWS) ? "\r\n" : "\n"; // Mac not supported yet
+define('PHPDOC_LINEBREAK', $lnbreak);
+
+// PHPDoc tries to handle args by it self
+unset($argc);
+// Clean-up previous docs
+if (@is_dir($dest_apidoc_dir)) {
+    System::rm("-r $dest_apidoc_dir");
+}
+
+// main PHPDoc Include File
+include PHPDOC_INCLUDE_DIR . 'prepend.php';
+
+$doc = new Phpdoc;
+
+// Sets the name of your application.
+// The name of the application gets used in many default templates.
+$doc->setApplication("PEAR Repository");
+
+// directory where your source files reside:
+$doc->setSourceDirectory($source_files);
+
+// save the generated docs here:
+$doc->setTarget($dest_apidoc_dir);
+
+// use these templates:
+$doc->setTemplateDirectory(PHPDOC_INCLUDE_DIR . '/renderer/html/templates/');
+
+// source files have one of these suffixes:
+$doc->setSourceFileSuffix(array ('php', 'inc'));
+
+// parse and generate the xml files
+$doc->parse();
+
+// turn xml in to html using templates
+$doc->render();
+
+// Copy the standar files
+$files = array('empty.html', 'index2.html', 'phpdoc.css', 'phpdoc.dtd');
+foreach($files as $file) {
+    copy("$phpdoc_include_dir/apidoc/keep/$file", "$dest_apidoc_dir/$file");
+}
+print "API Docs for $source_files done in $dest_apidoc_dir\n\n";
+printf("%d seconds needed\n\n", time() - $start);
+
+function usage($obj = null)
+{
+    $stderr = fopen('php://stderr', 'w');
+    if ($obj !== null) {
+        fputs($stderr, $obj->getMessage());
+    }
+    fputs($stderr,
+          "\nUsage: phpdoc [-h] [-i <dir>] [-s <dir>] [-d <dir>]\n".
+          "Options:\n".
+          "     -i <dir>  Directory with the PHPDoc include files\n".
+          "     -d <dir>  directory where your source files reside\n".
+          "     -s <dir>  save the generated docs here\n".
+          "     -h, -?    display help/usage (this message)\n".
+          "You could also set defaults values editing the header of this script\n".
+          "\n");
+    fclose($stderr);
+    exit;
+}
+
+?>
