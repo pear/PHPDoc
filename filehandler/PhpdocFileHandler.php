@@ -185,10 +185,10 @@ class PhpdocFileHandler extends PhpdocObject {
             if ("." == $file || ".." == $file)
                 continue;
             
-            if ($flag_subdir && is_dir($directory.$file))
+            if ($flag_subdir && @is_dir($directory.$file))
                 $files = $this->getFilesInDirectory($directory.$file, $suffix, true, $files);
                 
-            if (!is_file($directory.$file))
+            if (!@is_file($directory.$file))
                 continue;
             
             if ($flag_all) {

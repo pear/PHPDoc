@@ -192,6 +192,7 @@ class Phpdoc extends PhpdocSetupHandler {
 
         $fileHandler         = new PhpdocFileHandler;
         $files = $fileHandler->getFilesInDirectory($target, "xml");
+        sort($files);
         $len = strlen($target);
 
         $tpl = new IntegratedTemplate($this->templateRoot);

@@ -188,6 +188,7 @@ class PhpdocHTMLIndexRenderer extends PhpdocHTMLRenderer {
             }
 
             $chapters = $this->accessor->getChapters();
+            ksort($chapters);
             reset($chapters);
             while (list($name, $elements) = each($chapters)) {
 
@@ -283,7 +284,8 @@ class PhpdocHTMLIndexRenderer extends PhpdocHTMLRenderer {
 
         $this->loadPackagelist($xmlfile);
         $this->tpl->loadTemplatefile("packagelist.html");
-
+        
+        ksort($this->packages);
         reset($this->packages);
         while (list($packagename, $package) = each($this->packages)) {
 
@@ -292,8 +294,9 @@ class PhpdocHTMLIndexRenderer extends PhpdocHTMLRenderer {
                 if (!isset($package[$field]))
                     continue;
 
-                $this->tpl->setCurrentBlock("package_".$field."_loop");    
+                $this->tpl->setCurrentBlock("package_".$field."_loop");
 
+                sort($package[$field]);
                 reset($package[$field]);
                 while (list($k, $element) = each($package[$field])) {
 
@@ -336,33 +339,34 @@ class PhpdocHTMLIndexRenderer extends PhpdocHTMLRenderer {
         $this->loadPackagelist($xmlfile);
 
         reset($this->packages);
+        $caching = $this->tpl->flagCacheTemplatefile;
+        $this->tpl->flagCacheTemplatefile = false;
         while (list($packagename, $package) = each($this->packages)) {
-
-            $this->tpl->loadTemplatefile("frame_packageelementlist.html");
+            $this->tpl->loadTemplatefile('frame_packageelementlist.html');
             
             reset($this->packageFields);
             while (list($k, $field) = each($this->packageFields)) {
 
-                if (!isset($package[$field]))
+                if (!isset($package[$field])) {
                     continue;
+                }
 
                 $this->tpl->setCurrentBlock("package_" . $field . "_loop");    
 
+                sort($package[$field]);
                 reset($package[$field]);
                 while (list($k, $element) = each($package[$field])) {
-
                     $this->tpl->setVariable("ELEMENT", sprintf('<a href="%s" target="main">%s</a>', 
-                                                                    $this->nameToUrl($element) . $this->file_extension, 
-                                                                    $element
-                                                                ) 
-                                                    );
+                                                               $this->nameToUrl($element) . $this->file_extension, 
+                                                               $element
+                                                               ) 
+                                            );
                     $this->tpl->parseCurrentBlock();
                 }
 
                 $this->tpl->setCurrentBlock("package_" . $field);
                 $this->tpl->setVariable("EMPTY", "");
                 $this->tpl->parseCurrentBlock();
-
             }
 
             $this->tpl->setCurrentBlock("package");
@@ -371,9 +375,9 @@ class PhpdocHTMLIndexRenderer extends PhpdocHTMLRenderer {
 
             $this->tpl->setVariable("APPNAME", $this->application);
             $packagename = $this->nameToUrl($packagename);
-            $this->fileHandler->createFile($this->path . "packageelementlist_" . $packagename . $this->file_extension, $this->tpl->get() );                    
-
+            $this->fileHandler->createFile($this->path . "packageelementlist_" . $packagename . $this->file_extension, $this->tpl->get());
         }
+        $this->tpl->flagCacheTemplatefile = $caching;
 
         $this->tpl->free();
 
