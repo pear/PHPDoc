@@ -57,13 +57,13 @@ class PhpdocHTMLModuleRenderer extends PhpdocHTMLDocumentRenderer {
         $tplvars["MODULE_UNDOC"]    = ("true" == $module["undoc"]) ? $this->undocumented : "";
 
         if (isset($module["doc"]["link"]))
-            $this->renderLinks($module["doc"]["link"], "class_");
+            $this->renderLinks($module["doc"]["link"], "module_");
 
         if (isset($module["doc"]["author"]))
-            $this->renderAuthors($module["doc"]["author"], "class_");
+            $this->renderAuthors($module["doc"]["author"], "module_");
 
         if (isset($module["doc"]["see"]))
-            $this->renderSee($module["doc"]["see"], "class_");
+            $this->renderSee($module["doc"]["see"], "module_");
 
         $fields = array(     "version", "deprecated", "copyright", "since", "magic");
         reset($fields);
