@@ -448,3 +448,8 @@ class PhpdocParser extends PhpdocClassParser {
     
 } // end class PhpdocParser
 ?>
+            else {
+                $type       = 'null';
+                $raw_value  = $regs[0];
+                $value      = 'null';
+            }
