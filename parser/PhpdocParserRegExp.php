@@ -150,8 +150,9 @@ class PhpdocParserRegExp extends PhpdocObject {
                             "label"                 => '[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\xzf-\xff]*', 
                             "use"                   => "(include_once|include|require_once|require)",
                             "assignment"            => "\s*([,=])\s*",
-                            
-                            "boolean"               => "(true|false)",
+
+                            // changed to add uppercase values also 2/28/2002 - Tim Gallagher<timg@sunflowerroad.com>
+                            "boolean"               => "(true|false|TRUE|FALSE)",
                             
                             "constant"              => "[^\s]+",
                             "string_enclosed"       => "(['\"])(?:\\\\\\1|[^\\1])*?\\1",
