@@ -71,6 +71,7 @@ class PhpdocParserCore extends PhpdocParserTags {
         else
             list( , $phpcode) = $this->getModuleDoc($phpcode);
             
+        
         //
         // Find documented elements
         //
@@ -88,15 +89,15 @@ class PhpdocParserCore extends PhpdocParserTags {
                 
                 $paragraphs["classes"][] = array(
                                                  "name"     => $regs[1],
-                                                "extends"   => (isset($regs[2])) ? $regs[2] : "",
-                                                "doc"       => $this->extractPhpdoc(substr($phpcode, $start + 3, ($end-$start) - 2))
-                                        );
+                                                 "extends"   => (isset($regs[2])) ? $regs[2] : "",
+                                                 "doc"       => $this->extractPhpdoc(substr($phpcode, $start + 3, ($end-$start) - 2))
+                                                 );
                 $classes[$regs[1]] = true;
             
             } else if ( !isset($keywords["functions"]) && preg_match($this->PHP_COMPLEX["function"], $remaining, $regs)) {
 
                 $head = substr($remaining, strpos($remaining, $regs[0]) + strlen($regs[0]));
-                $head = substr( trim($this->getValue($head, array( "{" => true) )), 0, -1);
+                $head = substr(trim($this->getValue($head, array("{" => true))), 0, -1);
                 $paragraphs["functions"][] = array(
                                                     "name"  => $regs[1],
                                                     "doc"   => $this->extractPhpdoc( substr($phpcode, $start+3, ($end-$start)-2) ),
@@ -175,8 +176,8 @@ class PhpdocParserCore extends PhpdocParserTags {
                 if (!isset($classes[$data[1]]))
                     $paragraphs["classes"][] = array(
                                                      "name"     => $data[1],
-                                                    "extends"   => $data[2],
-                                                    "doc"       => ""
+                                                     "extends"   => $data[2],
+                                                     "doc"       => ""
                                                 );
 
         }
@@ -191,17 +192,16 @@ class PhpdocParserCore extends PhpdocParserTags {
                     $head = substr($phpcode, strpos($phpcode, $data[0]) + strlen($data[0]));
                     $head = substr(trim( $this->getValue($head, array( "{" => true) )), 0, -1);
                     $paragraphs["functions"][] = array(
-                                                        "name"  => $data[1],
-                                                        "doc"   => "",
-                                                        "head"  => $head
-                                                   );
+                                                       "name"  => $data[1],
+                                                       "doc"   => "",
+                                                       "head"  => $head
+                                                       );
                 }
-
+            
         }
         
-
+        
         if (!isset($keywords["variables"])) {
-
             preg_match_all($this->PHP_COMPLEX["undoc_var"], $phpcode, $regs, PREG_SET_ORDER);
             reset($regs);
             while (list($k, $data) = each($regs)) 
@@ -268,7 +268,7 @@ class PhpdocParserCore extends PhpdocParserTags {
             }
             
         }
-
+        
         return $paragraphs;
     }    // end func getPhpdocParagraphs
     
@@ -338,27 +338,25 @@ class PhpdocParserCore extends PhpdocParserTags {
                     // Try the remaining keywords. If one matches it's not a module doc 
                     // assume that the module doc is missing. If none matches assume that
                     // it's a module doc which lacks the module tags.
-                    if ( preg_match($this->PHP_COMPLEX["function"], $remaining) ||
-                         preg_match($this->PHP_COMPLEX["use"], $remaining) ||
-                         preg_match($this->PHP_COMPLEX["const"], $remaining) ||
-                         preg_match($this->PHP_COMPLEX["var"], $remaining) 
-                        ) {
-
-                            $module = array(
-                                            "doc"       => "",
-                                            "status"    => "missing",
-                                            "name"      => "",
-                                            "group"     => ""
+                    if (preg_match($this->PHP_COMPLEX["function"], $remaining) ||
+                        preg_match($this->PHP_COMPLEX["use"], $remaining) ||
+                        preg_match($this->PHP_COMPLEX["const"], $remaining) ||
+                        preg_match($this->PHP_COMPLEX["var"], $remaining)) {
+                        
+                        $module = array(
+                                        "doc"       => "",
+                                        "status"    => "missing",
+                                        "name"      => "",
+                                        "group"     => ""
                                         );
-                            $remaining = $phpcode;
-                            
+                        $remaining = $phpcode;
                     } else {
 
                         $module = array(
-                                        "doc"       => $doc_comment,
-                                        "status"    => "tags missing",
-                                        "name"      => "",
-                                        "group"     => ""
+                                        'doc'       => $doc_comment,
+                                        'status'    => 'tags missing',
+                                        'name'      => '',
+                                        'group'     => ''
                                         );
 
                     }
@@ -397,47 +395,46 @@ class PhpdocParserCore extends PhpdocParserTags {
 
         $classes = array();
 
-        preg_match_all($this->PHP_COMPLEX["undoc_class"], $phpcode, $regs, PREG_SET_ORDER);
+        preg_match_all($this->PHP_COMPLEX['undoc_class'], $phpcode, $regs, PREG_SET_ORDER);
         reset($regs);
         while (list($k, $data) = each($regs))
             $classes[] = array(
-                                "name"      => $data[1],
-                                "extends"   => ""
+                                'name'      => $data[1],
+                                'extends'   => ''
                             );
         
-        preg_match_all($this->PHP_COMPLEX["undoc_class_extends"], $phpcode, $regs, PREG_SET_ORDER);
+        preg_match_all($this->PHP_COMPLEX['undoc_class_extends'], $phpcode, $regs, PREG_SET_ORDER);
         reset($regs);
         while (list($k, $data) = each($regs)) 
             $classes[] = array(
-                                "name"      => $data[1],
-                                "extends"   => $data[2]
+                                'name'      => $data[1],
+                                'extends'   => $data[2]
                             );
         
         return $classes;
     } // end func getClasses
     
     /**
-    * Strips "/xx", "x/" and x from doc comments (x means asterix).
+    * Strips '/xx', 'x/' and x from doc comments (x means asterix).
     *
     * @param    string  Doc comment to clean up.
     * @return   string  $phpdoc
     */
     function extractPhpdoc($paragraph) {
 
-        $lines = split( $this->PHP_BASE["break"], $paragraph);
-        $phpdoc = "";
+        $lines = split( $this->PHP_BASE['break'], $paragraph);
+        $phpdoc = '';
 
         reset($lines);
-        while (list($k, $line)=each($lines)) {
-        
-            $line = trim($line);
-            if ("" == $line)
+        while (list($k, $line) = each($lines)) {
+            if (preg_match('/^\s*$/', $line)) {
                 continue;
+            }
                 
-            if ("*" == $line[0])
-                $phpdoc.= trim(substr($line, 1)) . "\n";
+            if (preg_match('/^\s*\*/', $line))
+                $phpdoc .= preg_replace('/^\s*\*/', '', $line) . PHPDOC_LINEBREAK;
             else 
-                $phpdoc.= $line . "\n";
+                $phpdoc .= $line . PHPDOC_LINEBREAK;
                 
         }
         
@@ -456,33 +453,22 @@ class PhpdocParserCore extends PhpdocParserTags {
     *                                   $description[1] = long description (second line upto the first tag)
     */
     function getDescription($phpdoc) {
-    
         // find the position of the first doc tag
         $positions = $this->getTagPos($phpdoc);
 
         if (0 == count($positions))
             $desc = trim($phpdoc); // no doc tags
         else
-            $desc = trim(substr($phpdoc, 0, $positions[0]["pos"])); // strip tags
-
-        $lines = split($this->PHP_BASE["break"], $desc);
-            
-        if (1 == count($lines) || "" == $desc) {
+            $desc = trim(substr($phpdoc, 0, $positions[0]['pos'])); // strip tags
         
+        $lines = split($this->PHP_BASE['break'], $desc);
+            
+        if (1 == count($lines) || '' == $desc) {
             // only a short description but no long description - or even none of both
-            $description = array ($desc, "");
-        
+            $description = array ($desc, $desc);
         } else {
-        
             $sdesc = trim($lines[0]);
-            unset($lines[0]);
-            
-            $break = $this->PHP_BASE['break'];
-            if ($break{0} == '[') {
-                $break = substr($string, 1, -1);
-            }
-            $description = array ($sdesc, implode($break, $lines));
-            
+            $description = array($sdesc, $desc);
         }
     
         return $description;

@@ -49,10 +49,10 @@ class PhpdocHTMLRenderer extends PhpdocRendererObject {
     } // end func path
 
     /**
-    * Sets the template directory.
-    *
-    * @param    string
-    */
+     * Sets the template directory.
+     *
+     * @param    string
+     */
     function setTemplateRoot($templateRoot) {
 
         if (!empty($templateRoot) && '/' != substr($templateRoot, -1))
@@ -62,18 +62,18 @@ class PhpdocHTMLRenderer extends PhpdocRendererObject {
     } // end func setTemplateRoot
 
     /**
-    * Encodes the given string.
-    * 
-    * This function gets used to encode all userdependend 
-    * elements of the phpdoc xml files. Use it to 
-    * customize your rendering result: beware newlines (nl2br()),
-    * strip tags etc.
-    *
-    * @param    string  String to encode
-    * @return   string  $string    Encoded string
-    */
+     * Encodes the given string.
+     * 
+     * This function gets used to encode all userdependend 
+     * elements of the phpdoc xml files. Use it to 
+     * customize your rendering result.
+     * strip some tags.
+     *
+     * @param    string  String to encode
+     * @return   string  $string    Encoded string
+     */
     function encode($string) {
-        return nl2br(htmlspecialchars($string));
+        return str_replace(PHPDOC_LINEBREAK . PHPDOC_LINEBREAK, '<p>', strip_tags($string, '<a>,<i>,<b>,<pre>'));
     } // end func encode
 
 } // end class PhpdocHTMLRenderer
