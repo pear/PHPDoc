@@ -617,7 +617,6 @@ class PhpdocParserTags extends PhpdocParserRegExp {
     * @see      getTagPos()
     */
     function getTags($phpdoc) {
-
         $positions = $this->getTagPos($phpdoc);
         
         if (0 == count($positions))

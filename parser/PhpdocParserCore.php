@@ -477,7 +477,11 @@ class PhpdocParserCore extends PhpdocParserTags {
             $sdesc = trim($lines[0]);
             unset($lines[0]);
             
-            $description = array ($sdesc, implode($this->PHP_BASE["break"], $lines));
+            $break = $this->PHP_BASE['break'];
+            if ($break{0} == '[') {
+                $break = substr($string, 1, -1);
+            }
+            $description = array ($sdesc, implode($break, $lines));
             
         }
     
