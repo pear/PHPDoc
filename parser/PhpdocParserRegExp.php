@@ -86,7 +86,7 @@ class PhpdocParserRegExp extends PhpdocObject {
                         "module_separator"  => "::",
                         "module_tags"       => "(@modulegroup|@module)",
                                                
-                        "vartype"           => "(string|integer|int|long|real|double|float|boolean|bool|mixed|array|object)",
+                        "vartype"           => "(string|integer|int|constant|const|resource|long|real|double|float|boolean|bool|mixed|array|object)",
                         "access"            => "(private|public)"
                     );
 
@@ -152,7 +152,7 @@ class PhpdocParserRegExp extends PhpdocObject {
                             
                             "boolean"               => "(true|false)",
                             
-                            "string"                => "[^\s]+",
+                            "constant"              => "[^\s]+",
                             "string_enclosed"       => "(['\"])(?:\\\\\\1|[^\\1])*?\\1",
 
                             "int_oct"               => "[+-]?\s*0[0-7]+",
@@ -211,7 +211,7 @@ class PhpdocParserRegExp extends PhpdocObject {
                                 
                                 "type_boolean"          => "",
                                 
-                                "type_string"                        => "",
+                                "type_constant"         => "",
                                 "type_string_enclosed"  => "",
                                 
                                 "type_int_oct"          => "",
@@ -285,7 +285,7 @@ class PhpdocParserRegExp extends PhpdocObject {
         // 
         
         // optional object name
-         $this->C_COMPLEX["objectname_optional"] = sprintf("(?:object%s%s)?", 
+        $this->C_COMPLEX["objectname_optional"] = sprintf("(?:object%s%s)?", 
                                                             $this->PHP_BASE["space"],
                                                             $this->PHP_COMPLEX["classname"] 
                                                         );
@@ -376,7 +376,7 @@ class PhpdocParserRegExp extends PhpdocObject {
         //
         // include, include_once, require, require_once and friends 
         //
-// ? removed!
+        // ? removed!
         $this->PHP_COMPLEX["use"] = sprintf("@^%s%s[\(]%s((['\"])((?:\\\\\\3|[^\\3])*?)\\3|([^\s]+))%s[\)]%s;@is",
                                                     $this->PHP_BASE["use"],
                                                     $this->PHP_BASE["space_optional"],
@@ -427,14 +427,14 @@ class PhpdocParserRegExp extends PhpdocObject {
         //
         // RegExp used to grep variables types
         //
-        $elements = array( 
-                            "boolean", "string", "string_enclosed", 
-                            "int_oct", "int_hex", "float", "float_exponent", 
-                            "number", "array", "empty_array" 
-                        );
+        $elements = array(
+                          'boolean', 'string', 'string_enclosed', 'constant',
+                          'int_oct', 'int_hex', 'float', 'float_exponent',
+                          'number', 'array', 'empty_array'
+                          );
         reset($elements);
-        while (list($key, $name)=each($elements)) 
-            $this->PHP_COMPLEX["type_".$name] = sprintf("@^%s@", $this->PHP_BASE[$name]);
+        while (list($key, $name) = each($elements)) 
+            $this->PHP_COMPLEX['type_' . $name] = sprintf("@^%s@", $this->PHP_BASE[$name]);
                                                                             
         // 
         // Regular expressions used to analyse phpdoc tags.

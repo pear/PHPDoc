@@ -12,10 +12,10 @@ class PhpdocFunctionParser extends PhpdocVariableParser {
     * @var    array    $emptyFunction
     */
     var $emptyFunction = array(
-                                "name"  => "",
-                                "undoc" => true,
+                                'name'  => '',
+                                'undoc' => true,
                                 
-                                "args"  => array()
+                                'args'  => array()
                               );
         
     /**
@@ -25,38 +25,38 @@ class PhpdocFunctionParser extends PhpdocVariableParser {
     * @see    analyseFunctionParagraph()
     */
     var $functionTags = array(
-                                "parameter"     => true,
-                                "param"         => true,
+                                'parameter'     => true,
+                                'param'         => true,
                                 
-                                "return"        => true,
+                                'return'        => true,
                                 
-                                "access"        => true,
-                                "abstract"      => true,
-                                "static"        => true,
+                                'access'        => true,
+                                'abstract'      => true,
+                                'static'        => true,
                                 
-                                "throws"        => true,
+                                'throws'        => true,
                                 
-                                "see"           => true,
-                                "link"          => true,
+                                'see'           => true,
+                                'link'          => true,
                                 
-                                "global"        => true,
+                                'global'        => true,
                                 
-                                "version"       => true,
-                                "since"         => true,
+                                'version'       => true,
+                                'since'         => true,
                                 
-                                "deprecated"    => true,
-                                "deprec"        => true,
+                                'deprecated'    => true,
+                                'deprec'        => true,
                                 
-                                "brother"       => true,
-                                "sister"        => true,
+                                'brother'       => true,
+                                'sister'        => true,
                                 
-                                "exclude"       => true,
-                                "magic"         => true,
+                                'exclude'       => true,
+                                'magic'         => true,
                                 
-                                "author"        => true,
-                                "copyright"     => true,
+                                'author'        => true,
+                                'copyright'     => true,
                                 
-                                "todo"          => true
+                                'todo'          => true
                            );
     
     /**
@@ -67,23 +67,23 @@ class PhpdocFunctionParser extends PhpdocVariableParser {
     function analyseFunction($para) {
     
         $function = $this->emptyFunction;
-        $function["name"] = $para["name"];
+        $function['name'] = $para['name'];
 
-        if ("" != $para["doc"]) {
+        if ('' != $para['doc']) {
 
-            $function = $this->analyseTags($this->getTags($para["doc"]), $function, $this->functionTags);
+            $function = $this->analyseTags($this->getTags($para['doc']), $function, $this->functionTags);
             
-            list($msg, $function) = $this->checkParserErrors($function, "function");
-            if (""!=$msg) 
-                $this->warn->addDocWarning($this->currentFile, "function", $function["name"], $msg, "mismatch");
+            list($msg, $function) = $this->checkParserErrors($function, 'function');
+            if (''!=$msg) 
+                $this->warn->addDocWarning($this->currentFile, 'function', $function['name'], $msg, 'mismatch');
             
-            list($function["sdesc"], $function["desc"]) = $this->getDescription($para["doc"]);
+            list($function['sdesc'], $function['desc']) = $this->getDescription($para['doc']);
             
-            $function["undoc"] = false;
+            $function['undoc'] = false;
             
         } 
 
-        $function["args"] = $this->getFunctionArgs($para["head"]);            
+        $function['args'] = $this->getFunctionArgs($para['head']);            
         return $function;
     } // end func analyseFunction
     
@@ -97,17 +97,17 @@ class PhpdocFunctionParser extends PhpdocVariableParser {
     function getFunctionArgs($code) {
 
         $args = array();
-        while (preg_match($this->PHP_COMPLEX["argument"], $code, $regs)) {
+        while (preg_match($this->PHP_COMPLEX['argument'], $code, $regs)) {
 
-            $type       = "";
-            $value      = "";
+            $type       = '';
+            $value      = '';
             $optional   = false;
         
             if (!isset($regs[3])) {
                 
                 $len_of_value = strlen($regs[1]);
                 
-            } else if ("=" == $regs[3]) {
+            } else if ('=' == $regs[3]) {
         
                 $find     = $regs[1] . $regs[2];
                 $code     = substr($code, strpos($code, $find) + strlen($find) );
@@ -124,10 +124,10 @@ class PhpdocFunctionParser extends PhpdocVariableParser {
             
             $code = substr($code, $len_of_value);
             $args[] = array(
-                            "optional"  => $optional, 
-                            "default"   => $value,
-                            "type"      => $type,
-                            "name"      => $regs[1]
+                            'optional'  => $optional, 
+                            'default'   => $value,
+                            'type'      => $type,
+                            'name'      => $regs[1]
                            );
 
         }
@@ -136,3 +136,4 @@ class PhpdocFunctionParser extends PhpdocVariableParser {
     } // end func getFunctionArgs
     
 } // end class PhpdocFunctionParser
+?>
