@@ -1,5 +1,7 @@
 <?php
 
+// $Id $
+
 // 3/18/2002 - Tim Gallagher<timg@sunflowerroad.com>
 // this allows you to change the document root and not have to rely on it to
 // be set correctly every place it get used throughout the code.
@@ -19,18 +21,15 @@ if ( (! isset($_REQUEST)) && (! isset($_GET)) ) {
     // in other words you can change GET then POST to POST then GET
     // where the second set of variables overrides the first.
 
-    foreach ($HTTP_GET_VARS as $key => $value)
-    {
+    foreach ($HTTP_GET_VARS as $key => $value) {
         $_GET[$key] = $value;
         $_REQUEST[$key] =& $_GET[$key];
     }; // end foreach loop
 
-    foreach ($HTTP_POST_VARS as $key => $value)
-    {
+    foreach ($HTTP_POST_VARS as $key => $value) {
         $_POST[$key] = $value;
         $_REQUEST[$key] =& $_POST[$key];
     }; // end foreach loop
-
 }; // end if
 
 ?>
