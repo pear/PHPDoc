@@ -187,20 +187,25 @@ class PhpdocIndexAccessor extends PhpdocAccessor {
         if ($this->flagBuild["package"])
             return;
         
-        $data = $this->xml["packagelist"];
+        if (isset($this->xml['packagelist'])) {
+            $data = $this->xml["packagelist"];
+        }
+
         $this->xml = array();
         $this->flagBuild["package"] = true;
         
         $this->packages = array();
-        
-        if (!isset($data["package"][0]))
-            $data["package"] = array($data["package"]);
+
+        if (!isset($data['package'][0]))
+            $data['package'] = array($data['package']);
             
         reset($data["package"]);
         while (list($k, $package) = each($data["package"])) {
-            
-            $packagename = $package["name"];
-            
+            if (!isset($package['name'])) {
+                $packagename = '';
+            } else {
+                $packagename = $package['name'];
+            }
             reset($this->packageFields);
             while (list($k, $field) = each($this->packageFields)) {
                 
@@ -300,7 +305,7 @@ class PhpdocIndexAccessor extends PhpdocAccessor {
     */    
     function buildClasstree() {
     
-        if ($this->flagBuild["classtree"])
+        if (isset($this->flagBuild['classtree']) && $this->flagBuild['classtree'])
             return;
             
         $this->flagBuild["classtree"] = true;

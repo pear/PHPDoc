@@ -235,16 +235,11 @@ class PhpdocAnalyser extends PhpdocObject {
         // compare the informations from the parser with the @param tags
         reset($args);
         while (list($k, $arg) = each($args)) {
-
-            if (isset($params[$k])) {
-
+            if (is_array($params) && isset($params[$k])) {
                 if ($arg['optional'])
                     $params[$k]['default'] = $arg['default'];
-
                 if (!$inherited) {
-
                     if ('' != $arg['type'] && '' != $params[$k]['type'] && 'mixed' != $params[$k]['type'] && strtolower($arg['type']) != strtolower($params[$k]['type'])) {
-
                         $type = $arg['type'];
                         $msg = sprintf('%s parameter type "%s" does not match the the documented type "%s", possible error consider an update to "@param %s %s %s" or "@param %s %s", the variable name is optional.',
                                         $this->addNumberSuffix($k + 1),
@@ -275,9 +270,8 @@ class PhpdocAnalyser extends PhpdocObject {
 
                 } else {
 
-                    if ('' != $params[$k]['type'] && strtolower($arg['type']) != strtolower($params[$k]['type'])) {
-
-                        $type = (''!=$args['type']) ? $arg['type'] : $params[$k]['type'];
+                    if (isset($params[$k]['type']) && $params[$k]['type'] != '' && strtolower($arg['type']) != strtolower($params[$k]['type'])) {
+                        $type = (isset($args['type']) && $args['type'] != '') ? $arg['type'] : $params[$k]['type'];
                         $msg = sprintf('Possible documentation error due to inherited information.
                                         The type of the %s parameter "%s" does not match the documented type "%s".
                                         Override the inherited documentation if neccessary.',

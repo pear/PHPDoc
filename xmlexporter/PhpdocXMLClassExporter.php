@@ -166,18 +166,16 @@ class PhpdocXMLClassExporter extends PhpdocXMLDocumentExporter {
     * @param    array
     */
     function variablesXML($variables) {
-                                                            
         reset($variables);
         while (list($variable, $data) = each($variables)) {
-        
             $attribs = $this->getAttributes($data, $this->variableAttributes);
-            $this->xmlwriter->startElement("variable", $data["value"], $attribs, false);
+            if (!isset($data['value'])) {
+                $data['value'] = '';
+            }
+            $this->xmlwriter->startElement('variable', $data['value'], $attribs, false);
             $this->docXML($data);
-            $this->xmlwriter->endElement("variable", true);
-            
+            $this->xmlwriter->endElement('variable', true);
         }
-        
     } // end func variablesXML
-    
 } // end class PhpdocXMLClassExporter
 ?>

@@ -160,8 +160,12 @@ class PhpdocClassAnalyser extends PhpdocAnalyser {
     */
     function findUndocumented($classname) {
         
-        $file = $this->classes["filename"];
-        if ($this->classes["undoc"])
+        if(isset($this->classes['filename'])) {
+            $file = $this->classes["filename"];
+        } else {
+            $file = '';
+        }
+        if (isset($this->classes['undoc']) && $this->classes['undoc'])
             $this->warn->addDocWarning($file, "class", $name, "The class is not documented.", "missing");
             
         reset($this->undocumentedFields);
@@ -192,8 +196,10 @@ class PhpdocClassAnalyser extends PhpdocAnalyser {
             
         reset($this->classes[$classname]["functions"]);
         while (list($fname, $function) = each($this->classes[$classname]["functions"])) {
-
-            $inherited = isset($function["paraminherited"]);            
+            $inherited = isset($function["paraminherited"]);
+            if (!isset($function['params'])) {
+                $function['params'] = '';
+            }
             $this->classes[$classname]["functions"][$fname]["params"] = $this->checkArgDocs($function["args"], $function["params"], $fname, $file, $inherited);
             unset($this->classes[$classname]["functions"][$fname]["args"]);
 

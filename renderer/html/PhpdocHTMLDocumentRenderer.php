@@ -363,13 +363,13 @@ class PhpdocHTMLDocumentRenderer extends PhpdocHTMLRenderer {
                 $tplvars["NAME"]    = $function["name"];
                 $tplvars["ACCESS"]  = $function["access"];
 
-                if ("true" == $function["undoc"])
+                if (isset($function['undoc']) && $function['undoc'] == 'true')
                     $tplvars["UNDOC"]  = $this->undocumented;
 
-                if ("true" == $function["abstract"])
+                if (isset($function['abstract']) && $function['abstract'] == 'true')
                     $tplvars["ABSTRACT"] = "abstract";
 
-                if ("true" == $function["static"])
+                if (isset($function['static']) && $function["static"] == 'true')
                     $tplvars["STATIC"] = "static";
 
                 if (isset($function["doc"]["shortdescription"]))
@@ -449,7 +449,7 @@ class PhpdocHTMLDocumentRenderer extends PhpdocHTMLRenderer {
             if (isset($param["default"]))
                 $this->tpl->setVariable("DEFAULT", "= >>".htmlentities($param["default"])."<<");
 
-            if ("true" == $param["undoc"])
+            if (isset($param['undoc']) && $param['undoc'] == 'true')
                 $this->tpl->setVariable("UNDOC", $this->undocumented);
 
             $this->tpl->parseCurrentBlock();            
@@ -468,15 +468,16 @@ class PhpdocHTMLDocumentRenderer extends PhpdocHTMLRenderer {
         if (!is_array($parameter))
             return "void";
 
-        $value = "";
-
+        $value = '';
         if (!isset($parameter[0])) {
-
-            if (!isset($parameter["default"]))
+            if (!isset($parameter["default"])) {
+                if (!isset($parameter['type'])) {
+                    $parameter['type'] = '';
+                }
                 $value .= $parameter["type"] . " " . $parameter["name"];
-            else
+            } else {
                 $value .= "[ ".$parameter["type"] . " " . $parameter["name"]." ]";
-
+            }
         } else {
 
             $flag_optional = false;
@@ -495,8 +496,11 @@ class PhpdocHTMLDocumentRenderer extends PhpdocHTMLRenderer {
                         $flag_optional = true;
                     }
                 }
-
+                if (!isset($param['type'])) {
+                    $param['type'] = '';
+                }
                 $value .= $param["type"] . " " . $param["name"].", ";
+                    
             }
 
             $value = substr($value, 0, -2);
@@ -573,27 +577,22 @@ class PhpdocHTMLDocumentRenderer extends PhpdocHTMLRenderer {
     */    
     function renderAuthors($authors, $prefix = "") {
 
-        $value = "";
-
+        $value = '';
         if (!isset($authors[0])) {
-
-            if (isset($authors["email"]))
+            if (isset($authors["email"])) {
                 $value .= sprintf('%s &lt;<a href="mailto:%s">%s</a>&gt;, ', $authors["value"], $authors["email"], $authors["email"]);
-            else 
-                $value .= $authors["email"] . ", ";
-
+            } else {
+                $value .= $authors['value'] . ', ';
+            }
         } else {
-
             reset($authors);
             while (list($k, $author) = each($authors)) {
-
                 if (isset($author["email"]))
                     $value .= sprintf('%s &lt;<a href="mailto:%s">%s</a>&gt;, ', $author["value"], $author["email"], $author["email"]);
                 else 
-                    $value .= $author["email"] . ", ";
+                    $value .= $author['value'] . ', ';
 
             }
-
         }
 
         $value = substr($value, 0, -2);

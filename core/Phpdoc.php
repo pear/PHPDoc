@@ -21,6 +21,11 @@ class Phpdoc extends PhpdocSetupHandler {
     var $flag_output = true;
 
     /**
+    * The Instructions have finished?
+    */
+    var $finishInstructions = TRUE;
+
+    /**
     * Calls the command line handler if necessary.
     *
     * WARNING: Does not work

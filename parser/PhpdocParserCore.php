@@ -131,7 +131,7 @@ class PhpdocParserCore extends PhpdocParserTags {
                 
                 $paragraphs['consts'][] = array(
                                                 'name'    => $name,
-                                                'value'   => ('' != $regs[4]) ? substr($regs[3], 1, -1) : $regs[3],
+                                                'value'   => (isset($regs[4]) && $regs[4] != '') ? substr($regs[3], 1, -1) : $regs[3],
                                                 'case'    => $case,
                                                 'doc'     => $this->extractPhpdoc(substr($phpcode, $start + 3, ($end - $start) - 2))
                                             );
@@ -237,7 +237,7 @@ class PhpdocParserCore extends PhpdocParserTags {
                     
                     $paragraphs['consts'][] = array(
                                                     'name'  => $name,
-                                                    'value' => ('' != $data[4]) ? substr($data[3], 1, -1) : $data[3],
+                                                    'value' => (isset($data[4]) && $data[4] != '') ? substr($data[3], 1, -1) : $data[3],
                                                     'case'  => $case,
                                                     'doc'    => ''
                                                   );

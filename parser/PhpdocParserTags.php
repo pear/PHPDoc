@@ -287,7 +287,7 @@ class PhpdocParserTags extends PhpdocParserRegExp {
                                         
                                 } else if (!strstr($name, $this->C_BASE["module_separator"])) {
                                 
-                                    $error .= "Use function() to refer to functions and $var to referr to variables - don't know what '$name' referrs to.";
+                                    $error .= "Use function() to refer to functions and \$var to referr to variables - don't know what '$name' referrs to.";
                                     continue;
                                     
                                 }

@@ -444,8 +444,11 @@ class PhpdocParserRegExp extends PhpdocObject {
                           'number', 'array', 'empty_array', 'empty_resource'
                           );
         reset($elements);
-        while (list($key, $name) = each($elements)) 
-            $this->PHP_COMPLEX['type_' . $name] = sprintf("@^%s@", $this->PHP_BASE[$name]);
+        while (list($key, $name) = each($elements)) {
+            if (isset($this->PHP_BASE[$name])) {
+                $this->PHP_COMPLEX['type_' . $name] = sprintf("@^%s@", $this->PHP_BASE[$name]);
+            }
+        }
                                                                             
         // 
         // Regular expressions used to analyse phpdoc tags.

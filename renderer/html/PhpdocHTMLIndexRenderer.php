@@ -492,20 +492,19 @@ class PhpdocHTMLIndexRenderer extends PhpdocHTMLRenderer {
     */
     function buildClasstreeHTML($class) {
 
-        $html = "";
-        
-        if (0 == count($this->classtree["classes"][$class])) {
-
+        $html = '';
+        if (isset($this->classtree['classes'][$class]) && count($this->classtree['classes'][$class]) == 0) {
             $html .= sprintf('<li><a href="%s">%s</a>', $this->nameToUrl($class) . $this->file_extension, $class);
-
         } else {
-
             $html .= sprintf('<li><a href="%s">%s</a>', $this->nameToUrl($class) . $this->file_extension, $class);
             $html .= "<ul>";
 
-            reset($this->classtree["classes"][$class]);
-            while (list($k, $subclass) = each($this->classtree["classes"][$class])) 
-                $html .= $this->buildClasstreeHTML($subclass);                    
+            if (isset($this->classtree['classes'][$class])) {
+                reset($this->classtree['classes'][$class]);
+                while (list($k, $subclass) = each($this->classtree["classes"][$class])) {
+                    $html .= $this->buildClasstreeHTML($subclass);
+                }
+            }
 
             $html .= "</ul>";
 

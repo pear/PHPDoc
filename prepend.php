@@ -29,7 +29,7 @@ define("PHPDOC_SEPARATE_DESCRIPTIONS",TRUE);
 // 3/11/2002 Tim Gallagher<timg@sunflowerroad.com> added two defines
 // that are used on generated documentation
 // PHPDOCVERSION is the name of the tempate tag
-define("PHPDOC_VERSION", "PHPDoc v1.5");
+define("PHPDOC_VERSION", "PHPDoc 0.1.0 BETA");
 // PHPDOC_LINK is the name of the template tag
 define("PHPDOC_LINK", '<a href="http://www.phpdoc.de/">www.phpdoc.de</a');
 
@@ -138,29 +138,28 @@ function mainPageHeader()
     global $_SERVER;
 
     global $PHPDOC_templates;
-?><!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+?><!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-	<title>PHPDOC Version 2.0</title>
+  <title>PHPDOC HTML Front End</title>
 </head>
 
-<body>
-<font face="Arial, Helvetica" size="1">
-	<table width="750">
-		<tr>
-			<td align="left" valign="top">
-				<h2><?PHP echo PHPDOC_VERSION; ?></h2>
-						<P>PHPDoc currently requires a late PHP4 version (4.0.3dev or above) to work.
-						Some earlier version like to crash with memory trouble.
-						PHPDoc now requires at least version 4.0.0 and <i>might</i> run with
-                        versions prior to 4.0.3dev on a good day, but you might have problems.
-			</td>
-		<tr>
-			<td align="left" valign="top"><hr></td>
-		</tr>
-		<tr>
-			<td align="left" valign="top">
-            <?	include ("./front-end.php");
+<body bgcolor="white" text="black">
+<table colpadding="0" colspacing="0">
+  <tr>
+	<td>
+	  <h2><?PHP echo PHPDOC_VERSION; ?></h2>
+	  <p>PHPDoc currently requires a late PHP4 version (4.0.3dev or above) to work.
+      Some earlier version like to crash with memory trouble.
+	  PHPDoc now requires at least version 4.0.0 and <i>might</i> run with
+      versions prior to 4.0.3dev on a good day, but you might have problems.</p>
+    </td>
+  <tr>
+	<td><hr></td>
+  </tr>
+  <tr>
+    <td>
+       <?	include ("./front-end.php");
 } // end func
 /**
 * The main page footer for PHPDoc

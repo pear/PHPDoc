@@ -168,6 +168,7 @@ class PhpdocXMLWriter extends PhpdocObject {
     function xmlencode($value) {
 #        return preg_replace( array("@<@", "@>@", "@'@", '@"@', "@&@", "@" . PHPDOC_LINEBREAK ."@", "@\n@", "@\r@"), array("&lt;", "&gt;", "&apos;", "&quot;", "&amp;", '&#x0a;', '&#x0a;', '&#x0a;'), $value);
         return utf8_encode(preg_replace( array("@<@", "@>@", "@'@", '@"@', "@&@", "@" . PHPDOC_LINEBREAK . "@", "@\n@", "@\r@"), array("&lt;", "&gt;", "&apos;", "&quot;", "&amp;", '&#x0a;', '&#x0a;', '&#x0a;'), $value));
+
     } // end func xmlencode
     
 } // end class PhpdocXMLWriter

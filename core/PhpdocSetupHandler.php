@@ -160,7 +160,7 @@ class PhpdocSetupHandler extends PhpdocArgvHandler {
         }
         
         if (!is_dir($target)) {
-            $ok = mkdir($target, 0755);
+            $ok = @mkdir($target, 0755);
             if (!$ok) {
                 $this->err[] = new PhpdocError("setTarget(), can't create a directory '$target'.", __FILE__, __LINE__);
                 return false;

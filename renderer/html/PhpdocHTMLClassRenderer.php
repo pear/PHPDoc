@@ -70,7 +70,11 @@ class PhpdocHTMLClassRenderer extends PhpdocHTMLDocumentRenderer {
         $tplvars["CLASS_FILE"]      = $class["file"]["value"];
         $tplvars["CLASS_NAME"]      = $class["name"];
         $tplvars["CLASS_ACCESS"]    = $class["access"];
-        $tplvars["CLASS_PACKAGE"]   = $class["package"];
+        if (isset($class['package'])) {
+            $tplvars["CLASS_PACKAGE"]   = $class["package"];
+        } else {
+            $tplvars["CLASS_PACKAGE"]   = '';
+        }
 
         if ("" != $class["extends"])
             $tplvars["CLASS_EXTENDS"] = sprintf('extends <a href="%s">%s</a>', 
@@ -80,9 +84,9 @@ class PhpdocHTMLClassRenderer extends PhpdocHTMLDocumentRenderer {
             
         $tplvars["CLASS_UNDOC"]    = ("true" == $class["undoc"]) ? $this->undocumented : "";
         
-        $tplvars["CLASS_ABSTRACT"] = ("true" == $class["abstract"]) ? "abstract" : "";
-        $tplvars["CLASS_STATIC"]   = ("true" == $class["static"]) ? "static" : "";
-        $tplvars["CLASS_FINAL"]    = ("true" == $class["final"]) ? "final" : "";
+        $tplvars["CLASS_ABSTRACT"] = (isset($class['abstract']) && $class['abstract']) ? "abstract" : "";
+        $tplvars["CLASS_STATIC"]   = (isset($class['static']) && $class['static'] == 'true') ? "static" : "";
+        $tplvars["CLASS_FINAL"]    = (isset($class['final']) && $class['final'] == 'true') ? "final" : "";
         
         $tplvars["CLASS_TREE"]     = $this->getClasstree($class["name"]);
         
@@ -298,18 +302,18 @@ class PhpdocHTMLClassRenderer extends PhpdocHTMLDocumentRenderer {
             while (list($name, $variable) = each($this->variables[$access])) {
             
                 $tplvars = array();
-                $tplvars["NAME"]    =    $variable["name"];
+                $tplvars["NAME"]    = $variable["name"];
                 $tplvars["ACCESS"]  = $variable["access"];
                 $tplvars["TYPE"]    = $variable["type"];
                 $tplvars["VALUE"]   = htmlentities($variable["value"]);
 
-                if ("true" == $variable["undoc"]) 
+                if (isset($variavle['undoc']) && $variable['undoc'] == 'true') 
                     $tplvars["UNDOC"] = $this->undocumented;
 
-                if ("true" == $variable["static"])
+                if (isset($variavle['static']) && $variable['static'] == 'true')
                     $tplvars["STATIC"] = "static";
 
-                if ("true" == $variable["final"])
+                if (isset($variavle['final']) && $variable['final'] == 'true')
                     $tplvars["FINAL"] = "final";
 
                 if (isset($variable["doc"]["shortdescription"]))
@@ -345,7 +349,8 @@ class PhpdocHTMLClassRenderer extends PhpdocHTMLDocumentRenderer {
         $path = $this->accessor->getClasstree();
         $level = 0;
         $num = count($path) - 1;
-        
+        $value = '';
+
         for ($i = $num; $i >= 0; --$i) {
 
             $indent = $this->getIndent($level);
@@ -368,7 +373,7 @@ class PhpdocHTMLClassRenderer extends PhpdocHTMLDocumentRenderer {
         if ($level > 0)
             $value.= sprintf("%s|<br>%s+-- ", $indent, $indent);
 
-        $value.= sprintf('%s<br>', $class);
+        $value .= sprintf('%s<br>', $class);
 
         return $value;
     } // end func getClasstree
