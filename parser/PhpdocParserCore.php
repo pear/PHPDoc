@@ -459,14 +459,32 @@ class PhpdocParserCore extends PhpdocParserTags {
             $desc = trim(substr($phpdoc, 0, $positions[0]['pos'])); // strip tags
         
         $lines = split($this->PHP_BASE['break'], $desc);
+        // 3/8/2002 - Tim Gallagher<timg@sunflowerroad.com> changed this
+        // section back to original behavior.
+        // I don't like putting the short description with the long description.
+        // it muddys the data, and doesn't allow the template author to move them around
+        // separate of each other.  Instead, what i've done is to put description and short description
+        // together in my *templates*.  I like this better because I usually start the description
+        // with the first line of description, then continue the thought on to the next line(s)
+        // this looks better in code too because it flows better.
+        // plus, if there is no long description, the short one prints anyway.
+        // I don't want to start a code war, so i've defined a variable to allow both behaviors.
+        // look in prepend.php for that variable.
             
-        if (1 == count($lines) || '' == $desc) {
+        if (PHPDOC_SEPARATE_DESCRIPTIONS) {
+            $sdesc = trim($lines[0]);
+            unset($lines[0]);
+            $ldesc = implode(" ", $lines);
+            $description = array ($sdesc, $ldesc);
+        } else {
+            if (count($lines) == 1 || $desc == '') {
             // only a short description but no long description - or even none of both
             $description = array ($desc, $desc);
         } else {
             $sdesc = trim($lines[0]);
             $description = array($sdesc, $desc);
-        }
+            }; // end if
+        }; // end if
     
         return $description;
     } // end func getDescription
