@@ -179,7 +179,7 @@ class PhpdocFileHandler extends PhpdocObject {
         $dh = @opendir($directory);
         if (!$dh) {
             $this->err[] = new PhpdocError("Can't open '$directory' for reading.", __FILE__, __LINE__);
-            return array();
+            return $files;
         }
         
         while ($file = readdir($dh)) {
