@@ -119,6 +119,7 @@ class PhpdocFileHandler extends PhpdocObject {
     * @return   boolean
     */ 
     function createFile($filename, $content, $directory = "") {
+
         if ("" == $filename || "" == $content) {
             $this->err[] = new PhpdocError("No filename or no content given.", __FILE__, __LINE__);
             return false;

@@ -54,7 +54,7 @@ class PhpdocHTMLRendererManager extends PhpdocObject {
     * @access    public
     */
     function render($xmlfile, $type) {
-            
+
         switch (strtolower($type)) {
         
             case "class":

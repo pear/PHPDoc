@@ -1,24 +1,24 @@
-#!/usr/bin/php -Cq
+#!/usr/local/bin/php -Cq
 <?php
+
 /**
 * Console script to generate PHPDoc API Docucumentation from the command line
 *
-* TODO:
-*   - Added template selection support (for templates at rendered/html). Now
-*     uses the default
-*
 * @author Tomas V.V.Cox <cox@idecnet.com>
+* @author Derick Rethans <d.rethans@jdimedia.nl>
 * @version $Id$
 */
 
 /*** CONFIGURATION ***/
-
 // Directory with PHPDoc include files
-$phpdoc_include_dir = '/usr/lib/php/PHPDoc';
+$phpdoc_include_dir = '@php_dir@/PHPDoc';
 // directory where your source files reside
-$source_files = '/usr/lib/php/';
+$source_files = '@php_dir@';
 // save the generated docs here:
-$dest_apidoc_dir = '/usr/doc/pear';
+$dest_apidoc_dir = '@doc_dir@';
+// default template dir:
+$template_dir = '@data_dir@/PHPDoc';
+$template     = 'default';
 // force the deletion of the target apidocs directory
 $dest_apidoc_delete = false;
 
@@ -31,7 +31,7 @@ require_once 'System.php';
 error_reporting(E_ALL ^ E_NOTICE);
 
 $argv = Console_Getopt::readPHPArgv();
-$options = Console_Getopt::getopt($argv, "h?fv:i:s:d:");
+$options = Console_Getopt::getopt($argv, "h?fv:t:e:s:d:");
 if (PEAR::isError($options)) {
     usage($options);
 }
@@ -42,9 +42,6 @@ if (sizeof($options[0]) < 1) {
 foreach ($options[0] as $opt) {
     $param = $opt[1];
     switch($opt[0]) {
-        case 'i':
-            $phpdoc_include_dir = $param;
-            break;
         case 's':
             // directory where your source files reside
             $source_files = $param;
@@ -52,6 +49,14 @@ foreach ($options[0] as $opt) {
         case 'd':
             // save the generated docs here:
             $dest_apidoc_dir = $param;
+            break;
+        case 't':
+            // template directory:
+            $template_dir = $param;
+            break;
+        case 'e':
+            // template:
+            $template = $param;
             break;
         case 'f':
             // force the deletion of the target apidocs directory
@@ -76,6 +81,10 @@ ini_set('max_execution_time', 0);
 // Directory with PHPDoc include files
 $phpdoc_include_dir = realpath($phpdoc_include_dir);
 define('PHPDOC_INCLUDE_DIR', $phpdoc_include_dir . DIRECTORY_SEPARATOR);
+
+// Directory with PHPDoc template files
+$template_dir = realpath($template_dir);
+define('PHPDOC_TEMPLATE_DIR', $template_dir . DIRECTORY_SEPARATOR);
 
 // Important: set this to the Linebreak sign of your system!
 $lnbreak = (OS_WINDOWS) ? "\r\n" : "\n"; // Mac not supported yet
@@ -107,7 +116,7 @@ $doc->setSourceDirectory($source_files);
 $doc->setTarget($dest_apidoc_dir);
 
 // use these templates:
-$doc->setTemplateDirectory(PHPDOC_INCLUDE_DIR . '/renderer/html/default/');
+$doc->setTemplateDirectory($template_dir.'/renderer/html/'. $template);
 
 // source files have one of these suffixes:
 $doc->setSourceFileSuffix(array ('php', 'inc'));
@@ -118,14 +127,15 @@ $doc->parse();
 // turn xml in to html using templates
 $doc->render();
 
-// Copy the standar files
+// Copy the standard files
 $files = array('empty.html', 'index.html', 'phpdoc.css', 'phpdoc.dtd');
 $DS = DIRECTORY_SEPARATOR;
 $files_prefix = implode($DS, array('renderer', 'html', 'default', 'static'));
 foreach($files as $file) {
-    copy($phpdoc_include_dir . $DS . $files_prefix . $DS . $file,
+    copy($template_dir . $DS . $files_prefix . $DS . $file,
          "$dest_apidoc_dir/$file");
 }
+
 print "API Docs for $source_files done in $dest_apidoc_dir\n\n";
 printf("%d seconds needed\n\n", time() - $start);
 
@@ -138,9 +148,10 @@ function usage($obj = null)
     fputs($stderr,
           "\nUsage: phpdoc [-h] [-f] [-i <dir>] [-s <dir>] [-d <dir>]\n".
           "Options:\n".
-          "     -i <dir>  directory with the PHPDoc include files\n".
           "     -s <dir>  directory where your source files reside\n".
           "     -d <dir>  destination dir (save the generated docs here)\n".
+          "     -t <dir>  template dir (path to the templates)\n".
+          "     -e <name> template name (default='default')\n".
           "     -f        force the deletion of the destination directory\n".
           "     -h, -?    display help/usage (this message)\n".
           "You could also set defaults values editing the header of this script\n".

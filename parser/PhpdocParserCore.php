@@ -299,16 +299,17 @@ class PhpdocParserCore extends PhpdocParserTags {
     function getModuleDoc($phpcode) {
         
         $module = array();
+
+		$rp = '@((//|#).*?$|(/\*\*.*?\*/)|/\*.*?\*/)@ms';
+		$rp2 = "@^.*?(<\?php|<\?|<%|<script\s+language\s*=\s*[\"']php[\"']\s*>)\s*/\*\*(.*?)\*/@s";
+
+/*        if (preg_match($this->C_COMPLEX['module_doc'], $phpcode, $regs) ) {*/
+        if (preg_match($rp2, $code = preg_replace ($rp, '\3', $phpcode), $regs) ) {
         
-        if (preg_match($this->C_COMPLEX['module_doc'], $phpcode, $regs) ) {
-        
-            $start          = strlen($regs[0]);
-            $end            = strpos($phpcode, '*/', $start);
-            $remaining      = substr($phpcode, $end + 2);
-            $doc_comment    = substr($phpcode, $start, $end-$start);
+            $doc_comment    = $regs[2];
             
             // Do we have OO Code? If not, continue.
-            if ( !preg_match($this->PHP_COMPLEX['class'], $remaining) && !preg_match($this->PHP_COMPLEX['class_extends'], $remaining) ) {
+            if ( !preg_match($this->PHP_COMPLEX['class'], $code) && !preg_match($this->PHP_COMPLEX['class_extends'], $code) ) {
 
                 // Is there a module tag?
                 if ( preg_match($this->C_COMPLEX['module_tags'], $doc_comment) ) {
@@ -335,10 +336,10 @@ class PhpdocParserCore extends PhpdocParserTags {
                     // Try the remaining keywords. If one matches it's not a module doc 
                     // assume that the module doc is missing. If none matches assume that
                     // it's a module doc which lacks the module tags.
-                    if (preg_match($this->PHP_COMPLEX['function'], $remaining) ||
-                        preg_match($this->PHP_COMPLEX['use'], $remaining) ||
-                        preg_match($this->PHP_COMPLEX['const'], $remaining) ||
-                        preg_match($this->PHP_COMPLEX['var'], $remaining)) {
+                    if (preg_match($this->PHP_COMPLEX['function'], $doc_comment) ||
+                        preg_match($this->PHP_COMPLEX['use'], $doc_comment) ||
+                        preg_match($this->PHP_COMPLEX['const'], $doc_comment) ||
+                        preg_match($this->PHP_COMPLEX['var'], $doc_comment)) {
                         
                         $module = array(
                                         'doc'       => '',
@@ -370,6 +371,11 @@ class PhpdocParserCore extends PhpdocParserTags {
 
             $remaining = $phpcode;
 
+        }
+        
+        if (!isset($remaining)) {
+			$rp3 = "@^.*?(<\?php|<\?|<%|<script\s+language\s*=\s*[\"']php[\"']\s*>).*?/\*\*(.*?)\*/@s";
+        	$remaining = preg_replace($rp3, "", $phpcode);
         }
 
         return array($module, $remaining);
@@ -674,3 +680,5 @@ class PhpdocParserCore extends PhpdocParserTags {
     
 } // end class PhpdocParserObject
 ?>
+
+

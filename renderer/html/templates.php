@@ -5,8 +5,8 @@
 
 // the default templates
 // originally distributed with PHPDoc
-$PHPDOC_templates['default']['static_files_path'] = PHPDOC_INCLUDE_DIR . "renderer/html/default/static/";
-$PHPDOC_templates['default']['path'] = PHPDOC_INCLUDE_DIR . "renderer/html/default/";
+$PHPDOC_templates['default']['static_files_path'] = PHPDOC_TEMPLATE_DIR . "renderer/html/default/static/";
+$PHPDOC_templates['default']['path'] = PHPDOC_TEMPLATE_DIR . "renderer/html/default/";
 $PHPDOC_templates['default']['display_name'] = "Default";
 $PHPDOC_templates['default']['description'] = "The built in templates that come with PHPDoc.  Created by Ulf Wendel";
 
@@ -14,8 +14,8 @@ $PHPDOC_templates['default']['description'] = "The built in templates that come 
 
 // timmyg's templates created for enhanced readability
 // and css layout control
-$PHPDOC_templates['timmyg']['static_files_path'] = PHPDOC_INCLUDE_DIR . "renderer/html/timmyg/static/";
-$PHPDOC_templates['timmyg']['path'] = PHPDOC_INCLUDE_DIR . "renderer/html/timmyg/";
+$PHPDOC_templates['timmyg']['static_files_path'] = PHPDOC_TEMPLATE_DIR . "renderer/html/timmyg/static/";
+$PHPDOC_templates['timmyg']['path'] = PHPDOC_TEMPLATE_DIR . "renderer/html/timmyg/";
 $PHPDOC_templates['timmyg']['display_name'] = "timmyg";
 $PHPDOC_templates['timmyg']['description'] = "timmyg's templates created for enhanced readability, and css layout control." .
                                              "Created by timmyg - May be Internet Explorer specific.";

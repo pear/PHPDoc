@@ -425,7 +425,7 @@ class PhpdocParserRegExp extends PhpdocObject {
         //
         // A module can start with comments not relating to the module documentation.
         //
-        $this->C_COMPLEX["module_doc"] = sprintf("@^%s%s%s%s*?%s/\*\*@is",
+        $this->C_COMPLEX["module_doc"] = sprintf("@^%s%s%s%s*?%s/\*\*@i",
                                                     $this->PHP_BASE["space_optional"],
                                                     $this->PHP_COMPLEX["php_open_all"],
                                                     $this->PHP_BASE["space_optional"],
