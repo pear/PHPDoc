@@ -164,7 +164,9 @@ class PhpdocParserRegExp extends PhpdocObject {
                             "number"                => "[+-]?\s*\d+",
                             
                             "array"                 => "array\s*\(",
-                            "empty_array"           => "array\s*\(\s*\)\s*"
+                            "empty_array"           => "array\s*\(\s*\)\s*",
+
+                            "empty_resource"        => "NULL"
                         );
 
     /**
@@ -223,7 +225,9 @@ class PhpdocParserRegExp extends PhpdocObject {
                                 "type_number"           => "",
                                 
                                 "type_array"            => "",
-                                "type_empty_array"      => ""
+                                "type_empty_array"      => "",
+
+                                "type_empty_resource"   => ""
                             );                                                                    
 
     /**
@@ -357,7 +361,7 @@ class PhpdocParserRegExp extends PhpdocObject {
         // RegExp used to grep define statements.
         // NOTE: the backticks do not allow the usage of $this->PHP_BASE
         //
-        $this->PHP_COMPLEX["const"] = sprintf("@^[^>]%sdefine%s\(%s(%s)%s,%s(%s)%s(?:,%s(%s))?%s\)%s;@is", 
+        $this->PHP_COMPLEX["const"] = sprintf("@^%sdefine%s\(%s(%s)%s,%s(%s)%s(?:,%s(%s))?%s\)%s;@is",
                                                 $this->PHP_BASE["space_optional"],
                                                 $this->PHP_BASE["space_optional"],
                                                 $this->PHP_BASE["space_optional"],
@@ -430,7 +434,7 @@ class PhpdocParserRegExp extends PhpdocObject {
         $elements = array(
                           'boolean', 'string', 'string_enclosed', 'constant',
                           'int_oct', 'int_hex', 'float', 'float_exponent',
-                          'number', 'array', 'empty_array'
+                          'number', 'array', 'empty_array', 'empty_resource'
                           );
         reset($elements);
         while (list($key, $name) = each($elements)) 
@@ -449,10 +453,10 @@ class PhpdocParserRegExp extends PhpdocObject {
                                     );    
         $this->TAGS["return"] = $this->TAGS["var"];            
                                                         
-        $this->TAGS["global"] = sprintf("/%s%s(%s)%s(%s)%s(.*)/is",
+		$this->TAGS["global"] = sprintf("/%s(?:%s(%s))?(?:%s(%s))%s(.*)?/is",
                                         $this->C_BASE["vartype"],
-                                        $this->PHP_BASE["space_optional"],
-                                        $this->C_COMPLEX["objectname_optional"],
+                                        $this->PHP_BASE["space"],
+                                        $this->PHP_BASE["label"],
                                         $this->PHP_BASE["space"],
                                         $this->PHP_COMPLEX["varname"],
                                         $this->PHP_BASE["space_optional"]
