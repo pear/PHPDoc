@@ -1,25 +1,51 @@
-<?PHP
-$start = time();
+<?php
+/* vim: set expandtab tabstop=4 shiftwidth=4: */
+/*
+  +----------------------------------------------------------------------+
+  | PHP Version 4                                                        |
+  +----------------------------------------------------------------------+
+  | Copyright (c) 1997-2002 The PHP Group                                |
+  +----------------------------------------------------------------------+
+  | This source file is subject to version 2.02 of the PHP license,      |
+  | that is bundled with this package in the file LICENSE, and is        |
+  | available at through the world-wide-web at                           |
+  | http://www.php.net/license/2_02.txt.                                 |
+  | If you did not receive a copy of the PHP license and are unable to   |
+  | obtain it through the world-wide-web, please send a note to          |
+  | license@php.net so we can mail you a copy immediately.               |
+  +----------------------------------------------------------------------+
+  | Author: Antônio Carlos Venâncio Júnior <floripa@php.net>             |
+  +----------------------------------------------------------------------+
 
-// 3/12/2002 - Tim Gallagher<timg@sunflowerroad.com> added the version checking
-// included below to deal with the different ways php sends variables into scripts.
-// see the file for more information.
+  $Id$:
+*/
+
+/*
+ * Where is PHPDoc located
+ *
+*/
+$sourcedir = '';
+
+/*
+ * Where is PHPDoc Template located
+ *
+*/
+$templatedir = '';
+
+
+$start = time();
 include ("versionSanity.php");
 
-// WARNING: long runtimes! Make modifications 
-// to the php[3].ini if neccessary. A P3-500 
-// needs slightly more than 30 seconds to 
-// document phpdoc itself.
+if (empty($sourcedir)) {
+    $sourcedir = './';
+}
 
-// 3/8/2002 Tim Gallagher - cleaned up the code on this page
-// by making the html on this page a function call.
-// this makes the indenting much cleaner.
-// new functions can be found at the bottom of prepend.php
+if (empty($templatedir)) {
+    $templatedir = './';
+}
 
-//SERVER_DOC_ROOT is defined in versionSanity.php
-
-// Directory with include files
-define("PHPDOC_INCLUDE_DIR", SERVER_DOC_ROOT . "/apps/PHPDoc/");
+define('PHPDOC_INCLUDE_DIR', $sourcedir);
+define('PHPDOC_TEMPLATE_DIR', $templatedir);
 
 // Html tags allowed to be used in doc tags
 define("PHPDOC_ALLOWEDHTMLTAGS", "<a>,<i>,<b>,<pre>,<ul>,<li>,<br>,<code>");
@@ -37,15 +63,15 @@ $doc = new Phpdoc;
 
 // Sets the name of your application.
 // The name of the application gets used in many default templates.
-$doc->setApplication($_REQUEST['PHPDOC_appname']);
+$doc->setApplication($_POST['PHPDOC_appname']);
 
 // directory where your source files reside:
-$doc->setSourceDirectory(SERVER_DOC_ROOT . $_REQUEST['PHPDOC_sourcedir']);
+$doc->setSourceDirectory(SERVER_DOC_ROOT . $_POST['PHPDOC_sourcedir']);
 
 // save the generated docs here:
-$doc->setTarget(SERVER_DOC_ROOT . $_REQUEST['PHPDOC_targetdir']);
+$doc->setTarget(SERVER_DOC_ROOT . $_POST['PHPDOC_targetdir']);
 
-$templateName = $_REQUEST['PHPDOC_selectedTemplate'];
+$templateName = $_POST['PHPDOC_selectedTemplate'];
 
 // use these templates:
 // this is the data sent in from the html form.
@@ -60,7 +86,7 @@ $doc->setSourceFileSuffix( array ("php", "inc") );
 // this should be considered a HUGE security risk... we're not
 // checking any file permissions to see what we're deleting.
 */
-if ($_REQUEST['PHPDOC_deleteFilesOption'] =="ON") {
+if ($_POST['PHPDOC_deleteFilesOption'] =="ON") {
     // uncomment the line below to turn file deleting on.
     // if you do, you MUST be sure that only trusted people have access to the PHPDoc directory
     // because a malicious user could send bogus data to the script and delete EVERYTHING on your webserver.
@@ -88,7 +114,7 @@ for the path in the following section
 // linux, unix, and windows - make sure apache is set up correctly under win32 - in other words
 // make sure apache is using forward slashes in the virtual directive (or in the document root directive)
 $fileToCopySrc = str_replace("\\","/", realpath($PHPDOC_templates[$templateName]['static_files_path']) . "/");
-$fileToCopyDst = str_replace("\\","/", realpath(SERVER_DOC_ROOT. $_REQUEST['PHPDOC_targetdir']) . "/");
+$fileToCopyDst = str_replace("\\","/", realpath(SERVER_DOC_ROOT. $_POST['PHPDOC_targetdir']) . "/");
 
 // 3/11/2002 - Tim Gallagher<timg@sunflowerroad.com> added this note:
 // we've already scanned the static file path in templates.php located in PHPDOC/renderer/
@@ -118,7 +144,7 @@ $out = ob_get_contents();
 ob_end_clean();
 
 // display a link to view the documentation with.
-echo '<a href="' . $_REQUEST['PHPDOC_targetdir'] . '/">View your generated documentation here.</a><br>';
+echo '<a href="' . $_POST['PHPDOC_targetdir'] . '/">View your generated documentation here.</a><br>';
 
 echo nl2br($out);
 
