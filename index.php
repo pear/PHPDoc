@@ -22,19 +22,16 @@
 
 /*
  * Where is PHPDoc located
- *
 */
 $sourcedir = '';
 
 /*
  * Where is PHPDoc Template located
- *
 */
 $templatedir = '';
 
 
 $start = time();
-include ("versionSanity.php");
 
 if (empty($sourcedir)) {
     $sourcedir = './';
