@@ -640,7 +640,11 @@ class PhpdocParserCore extends PhpdocParserTags {
         
         } else if (preg_match($this->PHP_COMPLEX['type_constant'], $code, $regs)) {
             $constant = strtolower(trim($regs[0]));
-            if ($constant != 'null' && $constant != 'null,') {
+            if ($constant == 'null' || $constant == 'null,') {
+                $type       = '';
+                $value      = 'null';
+                $raw_value  = 'null';
+            } else {
                 $type       = 'constant';
                 $raw_value  = $regs[0];
                 $value      = $regs[0];
