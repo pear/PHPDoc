@@ -38,10 +38,18 @@ class PhpdocHTMLWarningRenderer extends PhpdocHTMLRenderer {
         if (!is_object($this->tpl)) 
             return;
 
+        // 3/11/2002 - Tim Gallagher added the next two lines
+        // so the version and link could be put in and easily
+        // changed as versions, and urls change.
+        $this->tpl->setVariable("PHPDOCVERSION", PHPDOC_VERSION);
+        $this->tpl->setVariable("PHPDOC_LINK", PHPDOC_LINK);
+        $this->tpl->setVariable("PHPDOC_GENERATED_DATE", PHPDOC_GENERATED_DATE);
+		
         $this->tpl->setVariable("APPNAME", $this->application);
+
         $this->fileHandler->createFile($this->path."phpdoc_warnings" . $this->file_extension, $this->tpl->get() );
 
-        $this->tpl = "";
+		$this->tpl->free();
         
     }    // end func finishWarnings
 
