@@ -144,6 +144,7 @@ class PhpdocParserRegExp extends PhpdocObject {
                             "php_open_asp"          => "<%",
                             "php_open_short_print"  => "<\?=",
                             "php_open_asp_print"    => "<%=",
+                            "php_comments"          => "(//.*?\s+|\#.*?\s+|/\*.*?\*/\s+)",
                             
                              # do not change the single quotes to double ones
                             "label"                 => '[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\xzf-\xff]*', 
@@ -420,9 +421,14 @@ class PhpdocParserRegExp extends PhpdocObject {
                                                     $this->PHP_COMPLEX["php_open_script"]
                                                 );
 
-        $this->C_COMPLEX["module_doc"] = sprintf("@^%s%s%s/\*\*@is", 
+        //
+        // A module can start with comments not relating to the module documentation.
+        //
+        $this->C_COMPLEX["module_doc"] = sprintf("@^%s%s%s%s*?%s/\*\*@is",
                                                     $this->PHP_BASE["space_optional"],
                                                     $this->PHP_COMPLEX["php_open_all"],
+                                                    $this->PHP_BASE["space_optional"],
+                                                    $this->PHP_BASE["php_comments"],
                                                     $this->PHP_BASE["space_optional"]
                                                 );
 
