@@ -637,7 +637,10 @@ class PhpdocParserCore extends PhpdocParserTags {
                 $type = 'array';
             }
             $raw_value == $value;
-        
+        } else if (preg_match($this->PHP_COMPLEX['type_empty_resource'], $code, $regs)) {
+                $type       = 'resource';
+                $value      = $regs[0];
+                $raw_value  = $regs[0];
         } else if (preg_match($this->PHP_COMPLEX['type_constant'], $code, $regs)) {
             $constant = strtolower(trim($regs[0]));
             if ($constant == 'null' || $constant == 'null,') {
