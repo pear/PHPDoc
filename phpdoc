@@ -126,10 +126,10 @@ function usage($obj = null)
     fputs($stderr,
           "\nUsage: phpdoc [-h] [-f] [-i <dir>] [-s <dir>] [-d <dir>]\n".
           "Options:\n".
-          "     -i <dir>  Directory with the PHPDoc include files\n".
-          "     -d <dir>  directory where your source files reside\n".
-          "     -s <dir>  save the generated docs here\n".
-          "     -f        force the deletion of the target apidocs directory\n".
+          "     -i <dir>  directory with the PHPDoc include files\n".
+          "     -s <dir>  directory where your source files reside\n".
+          "     -d <dir>  destination dir (save the generated docs here)\n".
+          "     -f        force the deletion of the destination directory\n".
           "     -h, -?    display help/usage (this message)\n".
           "You could also set defaults values editing the header of this script\n".
           "\n");
