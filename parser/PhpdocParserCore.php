@@ -307,6 +307,7 @@ class PhpdocParserCore extends PhpdocParserTags {
         if (preg_match($rp2, $code = preg_replace ($rp, '\3', $phpcode), $regs) ) {
         
             $doc_comment    = $regs[2];
+            $code = preg_replace($rp2, '', $code);
             
             // Do we have OO Code? If not, continue.
             if ( !preg_match($this->PHP_COMPLEX['class'], $code) && !preg_match($this->PHP_COMPLEX['class_extends'], $code) ) {
