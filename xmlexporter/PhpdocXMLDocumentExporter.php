@@ -209,7 +209,7 @@ class PhpdocXMLDocumentExporter extends PhpdocXMLExporter {
     /**
     * Adds a documentation block (author, links, see, params...) to the xml document
     * 
-    * @param    sarray
+    * @param    array
     */
     function docXML($data) {
         

@@ -368,7 +368,7 @@ class PhpdocHTMLClassRenderer extends PhpdocHTMLDocumentRenderer {
     *
     * @param    int     number of "&nbsp;" required.
     * @see      $indent
-    * @return   tring   A string with the requested number of nunbreakable html spaces
+    * @return   string   A string with the requested number of nunbreakable html spaces
     */
     function getIndent($level) {
 
