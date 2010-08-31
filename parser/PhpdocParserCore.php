@@ -426,7 +426,8 @@ class PhpdocParserCore extends PhpdocParserTags {
      */
     function extractPhpdoc($paragraph) {
 
-        $lines = split( $this->PHP_BASE['break'], $paragraph);
+        $lines = preg_split('/' . $this->PHP_BASE['break'] . '/', $paragraph);
+
         $phpdoc = '';
 
         reset($lines);
@@ -465,7 +466,7 @@ class PhpdocParserCore extends PhpdocParserTags {
         else
             $desc = trim(substr($phpdoc, 0, $positions[0]['pos'])); // strip tags
         
-        $lines = split($this->PHP_BASE['break'], $desc);
+        $lines = preg_split('/' . $this->PHP_BASE['break'] . '/', $desc);
         // 3/8/2002 - Tim Gallagher<timg@sunflowerroad.com> changed this
         // section back to original behavior.
         // I don't like putting the short description with the long description.
